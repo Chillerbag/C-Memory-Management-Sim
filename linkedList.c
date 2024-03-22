@@ -9,9 +9,12 @@ list_t* create_list() {
     return new_list;
 }
  
-void add_to_list(list_t* list, void* data) {
+void add_to_list(list_t* list, int arrival_time, const char* p_name, int service_time, int memory_requirement) {
     node_t* new_node = (node_t*)malloc(sizeof(node_t));
-    //new_node->data = data;
+    new_node->arrival_time = arrival_time;
+    new_node->p_name = strdup(p_name);
+    new_node->service_time = service_time;
+    new_node->memory_requirement = memory_requirement;
     new_node->next = list->head;
     list->head = new_node;
     list->size++;
@@ -22,11 +25,9 @@ void* remove_from_list(list_t* list) {
         return NULL;
     }
     node_t* node_to_remove = list->head;
-    // void* data = node_to_remove->data;
     list->head = node_to_remove->next;
     free(node_to_remove);
     list->size--;
-    return NULL; // return the data here. temp.
 }
  
 void free_list(list_t* list) {

@@ -3,7 +3,7 @@
 
 typedef struct {
     int arrival_time;
-    char p_name[256];
+    char* p_name;
     int service_time;
     int memory_requirement;
     struct node_t* next;
