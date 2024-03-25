@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <linkedList.h>
+#include <string.h>
+#include "linkedList.h"
 
 list_t* create_list() {
     list_t* new_list = (list_t*)malloc(sizeof(list_t));
@@ -15,12 +16,27 @@ void add_to_list(list_t* list, int arrival_time, const char* p_name, int service
     new_node->p_name = strdup(p_name);
     new_node->service_time = service_time;
     new_node->memory_requirement = memory_requirement;
-    new_node->next = list->head;
+    new_node->next = NULL;
     list->head = new_node;
+    list->size++;
+
+    if (list->head == NULL) {
+        list->head = new_node;
+    }
+
+    else {
+        node_t* current = list->head;
+
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_node;
+
+    }
     list->size++;
 }
  
-void* remove_from_list(list_t* list) {
+node_t* remove_from_list(list_t* list) {
     if (list->size == 0) {
         return NULL;
     }
@@ -28,6 +44,7 @@ void* remove_from_list(list_t* list) {
     list->head = node_to_remove->next;
     free(node_to_remove);
     list->size--;
+    return node_to_remove;
 }
  
 void free_list(list_t* list) {

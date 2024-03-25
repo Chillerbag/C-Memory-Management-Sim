@@ -14,5 +14,12 @@ typedef struct list {
     node_t* head;
 } list_t;
 
+list_t* create_list();
+
+void add_to_list(list_t* list, int arrival_time, const char* p_name, int service_time, int memory_requirement);
+
+node_t* remove_from_list(list_t* list);
+
+void free_list(list_t* list);
 
 #endif
