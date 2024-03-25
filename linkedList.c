@@ -17,8 +17,6 @@ void add_to_list(list_t* list, int arrival_time, const char* p_name, int service
     new_node->service_time = service_time;
     new_node->memory_requirement = memory_requirement;
     new_node->next = NULL;
-    list->head = new_node;
-    list->size++;
 
     if (list->head == NULL) {
         list->head = new_node;
@@ -26,7 +24,6 @@ void add_to_list(list_t* list, int arrival_time, const char* p_name, int service
 
     else {
         node_t* current = list->head;
-
         while (current->next != NULL) {
             current = current->next;
         }
@@ -36,13 +33,13 @@ void add_to_list(list_t* list, int arrival_time, const char* p_name, int service
     list->size++;
 }
  
+ // IMPORTANT: ONCE YOU USE THIS FUNCTION, YOU MUST FREE THE RETURNED NODE
 node_t* remove_from_list(list_t* list) {
     if (list->size == 0) {
         return NULL;
     }
     node_t* node_to_remove = list->head;
     list->head = node_to_remove->next;
-    free(node_to_remove);
     list->size--;
     return node_to_remove;
 }
@@ -51,6 +48,7 @@ void free_list(list_t* list) {
     node_t* current_node = list->head;
     while (current_node != NULL) {
         node_t* next_node = current_node->next;
+        free(current_node->p_name);
         free(current_node);
         current_node = next_node;
     }
