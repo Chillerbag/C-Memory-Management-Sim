@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.slim": "c",
+        "*.rmd": "markdown",
+        "genericmemorymanaging.h": "c",
+        "linkedlist.h": "c"
+    }
+}

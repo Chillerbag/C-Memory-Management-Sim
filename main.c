@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "linkedList.h"
+#include "genericMemoryManaging.h"
+#include "processManager.h"
 
 int main(int argc, char *argv[]) {
     // create the linked List of processes
@@ -23,4 +25,5 @@ int main(int argc, char *argv[]) {
         add_to_list(process_list, arrival_time, p_name_copy, service_time, memory_requirement);
 
     }
+    processing(process_list,INFINITE);
 }
