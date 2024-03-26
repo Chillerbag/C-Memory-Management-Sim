@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 void processing(list_t *process_list, memoryType mem) {
+    void * memoryManagerData = intialiseMemory(mem);
     node_t *currentProcess = process_list->head;
     node_t *newProcess = NULL;
     int time = 0;
@@ -21,7 +22,7 @@ void processing(list_t *process_list, memoryType mem) {
         // Clear finished process
         if (currentProcessTime >= currentProcess->service_time) {
             // call RR(head finished): removeHead(currentProcess)
-            // call MM: clearProcessMemory(mem,currentProcess)
+            clearProcessMemory(mem,memoryManagerData,currentProcess);
             currentProcess = NULL;
         }
 
@@ -32,9 +33,7 @@ void processing(list_t *process_list, memoryType mem) {
             node_t *returnValue = process_list->head;
             node_t *newProcess = returnValue;
 
-            // call MM(allocateMemory for the new process): allocateMemory(mem,newProcess)
-            bool isSuccessful = true;
-            if (!isSuccessful /*in task 2 it can be not successful*/) {
+            if (!allocateMemory(mem,memoryManagerData,newProcess)) {
                 // call RR(kick process to back of queue): removeHead(newProcess); append(newProcess)
                 continue;
             }

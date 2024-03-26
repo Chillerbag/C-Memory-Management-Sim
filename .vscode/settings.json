@@ -3,6 +3,8 @@
         "*.slim": "c",
         "*.rmd": "markdown",
         "genericmemorymanaging.h": "c",
-        "linkedlist.h": "c"
+        "linkedlist.h": "c",
+        "memorymanagercontiguous.h": "c",
+        "string.h": "c"
     }
 }

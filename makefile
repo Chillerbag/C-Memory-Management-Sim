@@ -1,6 +1,6 @@
 
-allocate: main.o processManager.o linkedList.o genericMemoryManaging.o roundRobin.o
-	gcc -Wall -o allocate main.o processManager.o linkedList.o genericMemoryManaging.o roundRobin.o
+allocate: main.o processManager.o linkedList.o genericMemoryManaging.o roundRobin.o memoryManagerInfinite.o memoryManagerContiguous.o memoryManagerPaged.o memoryManagerVirtual.o
+	gcc -Wall -o allocate main.o processManager.o linkedList.o genericMemoryManaging.o roundRobin.o memoryManagerInfinite.o memoryManagerContiguous.o memoryManagerPaged.o memoryManagerVirtual.o
 
 main.o: main.c linkedList.h genericMemoryManaging.h processManager.h
 	gcc -Wall -c main.c 
