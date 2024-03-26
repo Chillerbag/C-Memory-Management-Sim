@@ -4,6 +4,7 @@
 #include "linkedList.h"
 #include "genericMemoryManaging.h"
 #include "processManager.h"
+#include "roundRobin.h"
 
 int main(int argc, char *argv[]) {
     // create the linked List of processes
@@ -16,8 +17,25 @@ int main(int argc, char *argv[]) {
     int memory_requirement;
 
 
+       // Initialize variables to store the argument values
+    char *filename = NULL;
+    char *memory_strategy = NULL;
+    int quantum = 0;
+
+    // Iterate over the arguments
+    for (int i = 1; i < argc; i += 2) {
+        if (strcmp(argv[i], "-f") == 0) {
+            filename = argv[i + 1];
+        } else if (strcmp(argv[i], "-m") == 0) {
+            memory_strategy = argv[i + 1];
+        } else if (strcmp(argv[i], "-q") == 0) {
+            quantum = atoi(argv[i + 1]);
+        }
+    }
+
+
     // reading the data into the linked list
-    FILE *file = fopen(argv[1], "r");
+    FILE *file = fopen(filename, "r");
     char process[1024];
     while (fgets(process, sizeof(process), file)) {
         sscanf(process, "%d %8s %d %d", &arrival_time, p_name, &service_time, &memory_requirement);
@@ -25,5 +43,6 @@ int main(int argc, char *argv[]) {
         add_to_list(process_list, arrival_time, p_name_copy, service_time, memory_requirement);
 
     }
-    processing(process_list,INFINITE);
+    // processing(process_list,INFINITE);
+    roundRobin(process_list, quantum);
 }
