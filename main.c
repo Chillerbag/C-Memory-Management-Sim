@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
        // Initialize variables to store the argument values
     char *filename = NULL;
-    char *memory_strategy = NULL;
+    memoryType memory_strategy= -1;
     int quantum = 0;
 
     // Iterate over the arguments
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(argv[i], "-f") == 0) {
             filename = argv[i + 1];
         } else if (strcmp(argv[i], "-m") == 0) {
-            memory_strategy = argv[i + 1];
+            memory_strategy = memTypeFromString(argv[i + 1]);
         } else if (strcmp(argv[i], "-q") == 0) {
             quantum = atoi(argv[i + 1]);
         }
@@ -43,6 +43,6 @@ int main(int argc, char *argv[]) {
         add_to_list(process_list, arrival_time, p_name_copy, service_time, memory_requirement);
 
     }
-    // processing(process_list,INFINITE);
-    roundRobin(process_list, quantum);
+    processing(process_list,memory_strategy);
+    // roundRobin(process_list, quantum);
 }

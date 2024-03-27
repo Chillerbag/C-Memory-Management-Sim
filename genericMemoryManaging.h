@@ -8,5 +8,7 @@ typedef enum memoryType {
     VIRTUAL,
     PAGED
 } memoryType;
+
+memoryType memTypeFromString(char *);
 #endif
 

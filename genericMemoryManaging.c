@@ -6,6 +6,7 @@
 #include "memoryManagerPaged.h"
 #include "memoryManagerVirtual.h"
 #include <stdio.h>
+#include <string.h>
 
 void *intialiseMemory(memoryType me) {
     switch(me) {
@@ -35,4 +36,25 @@ bool allocateMemory(memoryType me, void *state, node_t *process) {
         case VIRTUAL: return allocateMemoryVirtual(state, process);
         default: return true;
     }
+}
+memoryType memTypeFromString(char * str) {
+    if (strcmp(str,"infinite"))
+    {
+        return INFINITE;
+    }
+    if (strcmp(str,"first-fit"))
+    {
+        return CONTIGUOUS;
+    }
+    if (strcmp(str,"paged"))
+    {
+        return PAGED;
+    }
+    
+    if (strcmp(str,"virtual"))
+    {
+        return VIRTUAL;
+    }
+    //TODO:throw error
+    return INFINITE;
 }
