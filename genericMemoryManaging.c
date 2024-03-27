@@ -19,13 +19,14 @@ void *intialiseMemory(memoryType me) {
 
 void clearProcessMemory(memoryType me, void *state, node_t *process) {
     switch(me) {
-        case INFINITE: clearProcessMemoryInfinite(state, process);
-        case CONTIGUOUS: clearProcessMemoryContiguous(state, process);
-        case PAGED: clearProcessMemoryPaged(state, process);
-        case VIRTUAL: clearProcessMemoryVirtual(state, process);
+        case INFINITE: clearProcessMemoryInfinite(state, process); break;
+        case CONTIGUOUS: clearProcessMemoryContiguous(state, process); break;
+        case PAGED: clearProcessMemoryPaged(state, process); break;
+        case VIRTUAL: clearProcessMemoryVirtual(state, process); break;
     }
 
 }
+
 bool allocateMemory(memoryType me, void *state, node_t *process) {
     switch(me) {
         case INFINITE: return allocateMemoryInfinite(state, process);
