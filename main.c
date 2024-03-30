@@ -9,6 +9,7 @@
 int main(int argc, char *argv[]) {
     // create the linked List of processes
     list_t *process_list = create_list();
+    list_t *not_arrived_list = create_list(); // Separate list for processes that have not arrived
 
     // set up vars to be read from file
     int arrival_time; 
@@ -40,9 +41,14 @@ int main(int argc, char *argv[]) {
     while (fgets(process, sizeof(process), file)) {
         sscanf(process, "%d %8s %d %d", &arrival_time, p_name, &service_time, &memory_requirement);
         char *p_name_copy = strdup(p_name);
-        add_to_list(process_list, arrival_time, p_name_copy, service_time, memory_requirement);
+        if (arrival_time > 0 ) {
+            add_to_list(not_arrived_list, arrival_time, p_name_copy, service_time, memory_requirement);
+        }
+        else {
+            add_to_list(process_list, arrival_time, p_name_copy, service_time, memory_requirement);
+        }
 
     }
-    processing(process_list,memory_strategy);
-    // roundRobin(process_list, quantum);
+    processing(process_list, memory_strategy);
+    //roundRobin(process_list, not_arrived_list, quantum);
 }

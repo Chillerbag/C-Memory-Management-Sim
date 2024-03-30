@@ -3,11 +3,11 @@
 #include <string.h>
 #include "linkedList.h"
 
-int roundRobin(list_t *process_list, int quantum) {
+int roundRobin(list_t *process_list, list_t *not_arrived_list, int quantum) {
     int totalTime = 0;
     int timeRunning = 0;
-
     node_t *curNode = process_list->head;
+
     while (curNode != NULL) {
         if (curNode->arrival_time >= totalTime) {
             if (curNode->service_time == 0) {
@@ -31,7 +31,6 @@ int roundRobin(list_t *process_list, int quantum) {
                 node_t *removedNode = remove_from_list(curNode);
                 curNode = curNode->next;
                 free(removedNode);
-                // i think theres a memory leak here, might need to free curNode->p_name
                 totalTime += 1;
                 timeRunning = 0;
 
@@ -40,6 +39,11 @@ int roundRobin(list_t *process_list, int quantum) {
         else {
             totalTime += 1;
 
+        }
+        while (not_arrived_list->head != NULL && not_arrived_list->head->arrival_time <= totalTime) {
+            node_t *moveNode = remove_from_list(not_arrived_list->head);
+            add_to_list(process_list, moveNode->arrival_time, moveNode->p_name, moveNode->service_time, moveNode->memory_requirement);
+            free(moveNode);
         }
     }
 }
