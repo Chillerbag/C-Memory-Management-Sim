@@ -17,7 +17,8 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
     bool currentProcessRunning = false;
 
     while (process_list->size != 0 || not_arrived_list->size != 0) {
-        printf("\nRUNNING TASK %s\n" , currentProcess->p_name);
+        //TODO: check what type of memoryManager we are using before we decide what we print here
+        printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, currentProcess->p_name, currentProcess->service_time);
 
         // move stuff that hasnt arrived yet to process_list if its ready.
         if (not_arrived_list->size > 0) {
@@ -37,14 +38,9 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
    
         // if the process is done, remove. 
         if (currentProcess->service_time == 0) {
-            printf("\nProcess %s COMPLETED at time %d\n", currentProcess->p_name, time);
-            printf("\n cleaning memory\n");
             clearProcessMemory(mem,memoryManagerData,currentProcess);
-            printf("\n setting new head\n");
             removeHead(process_list);
             currentProcess = process_list->head;
-            printf("\n new head set\n");
-
             // this doesn't make sense to ever do. Otherwise, we are pointlessly declaring variables. 
             // removeHead will assign a new list head. 
 
