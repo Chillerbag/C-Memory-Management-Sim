@@ -8,6 +8,8 @@
 
 int main(int argc, char *argv[]) {
     // create the linked List of processes
+
+    printf("\nstart\n");
     list_t *process_list = create_list();
     list_t *not_arrived_list = create_list(); // Separate list for processes that have not arrived
 
@@ -49,6 +51,7 @@ int main(int argc, char *argv[]) {
         }
 
     }
-    processing(process_list, memory_strategy);
+    printf("\nbegining to process\n");
+    processing(process_list, not_arrived_list, memory_strategy, quantum);
     //roundRobin(process_list, not_arrived_list, quantum);
 }

@@ -5,7 +5,7 @@ allocate: main.o processManager.o linkedList.o genericMemoryManaging.o roundRobi
 main.o: main.c linkedList.h genericMemoryManaging.h processManager.h
 	gcc -Wall -c main.c 
 
-processManager.o: processManager.c processManager.h linkedList.h genericMemoryManaging.h
+processManager.o: processManager.c processManager.h linkedList.h genericMemoryManaging.h roundRobin.h
 	gcc -Wall -c processManager.c 
 
 linkedList.o: linkedList.c linkedList.h 
