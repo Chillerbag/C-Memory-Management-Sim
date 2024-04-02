@@ -5,8 +5,8 @@
 void *intialiseMemoryInfinite() {
     return NULL;
 }
-void clearProcessMemoryInfinite(void *state, node_t *process) {
+void clearProcessMemoryInfinite(void *state, process_t *process) {
 }
-bool allocateMemoryInfinite(void *state, node_t *process) {
+bool allocateMemoryInfinite(void *state, process_t *process) {
     return true;
 }

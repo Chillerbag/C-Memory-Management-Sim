@@ -18,7 +18,7 @@ void *intialiseMemory(memoryType me) {
     }
 }
 
-void clearProcessMemory(memoryType me, void *state, node_t *process) {
+void clearProcessMemory(memoryType me, void *state, process_t *process) {
     switch(me) {
         case INFINITE: clearProcessMemoryInfinite(state, process); break;
         case CONTIGUOUS: clearProcessMemoryContiguous(state, process); break;
@@ -28,7 +28,7 @@ void clearProcessMemory(memoryType me, void *state, node_t *process) {
 
 }
 
-bool allocateMemory(memoryType me, void *state, node_t *process) {
+bool allocateMemory(memoryType me, void *state, process_t *process) {
     switch(me) {
         case INFINITE: return allocateMemoryInfinite(state, process);
         case CONTIGUOUS: return allocateMemoryContiguous(state, process);

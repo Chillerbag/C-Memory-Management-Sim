@@ -5,8 +5,8 @@
 void *intialiseMemoryContiguous() {
     return NULL;
 }
-void clearProcessMemoryContiguous(void *state, node_t *process) {
+void clearProcessMemoryContiguous(void *state, process_t *process) {
 }
-bool allocateMemoryContiguous(void *state, node_t *process) {
+bool allocateMemoryContiguous(void *state, process_t *process) {
     return true;
 }

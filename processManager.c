@@ -10,7 +10,7 @@
 
 void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, int quantum) {
     void *memoryManagerData = intialiseMemory(mem);
-    node_t *currentProcess = NULL;
+    process_t *currentProcess = NULL;
     int time = 0;
     int currentProcessTime = 0;
 
@@ -29,10 +29,11 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             // now, since we have removed a completed task, we say a task is not currently running
             currentProcessTime = 0;
         }
-        node_t *newProcess = NULL;
+
+        process_t *newProcess = NULL;
         while (newProcess == NULL) {
             // Determine the process that runs in this cycle
-            newProcess = getNextCurrentProcess(process_list, currentProcessTime, quantum);
+            newProcess = getNextCurrentProcess(process_list, currentProcessTime, quantum);            
             // don't worry about memory management if nothing or the same thing is being run
             if (newProcess == NULL || newProcess==currentProcess) break;
 
