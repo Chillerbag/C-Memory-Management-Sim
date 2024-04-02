@@ -44,12 +44,12 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 newProcess = NULL;
             }
             currentProcessTime = 0;
+            printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, currentProcess->p_name, currentProcess->service_time);
         }
         currentProcess = newProcess;
         // Step time
         if (currentProcess !=NULL) {
             if (currentProcess->service_time != 0) {
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, currentProcess->p_name, currentProcess->service_time);
                 currentProcess->service_time -= 1;
             }
         }
