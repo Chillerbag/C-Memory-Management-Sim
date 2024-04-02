@@ -23,6 +23,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
 
         // if the process is done, remove.
         if (currentProcess != NULL && currentProcess->service_time == 0) {
+            printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
             free(removeHead(process_list));
             clearProcessMemory(mem, memoryManagerData, currentProcess);
 
@@ -47,8 +48,10 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
         currentProcess = newProcess;
         // Step time
         if (currentProcess !=NULL) {
-            printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, currentProcess->p_name, currentProcess->service_time);
-            currentProcess->service_time -= 1;
+            if (currentProcess->service_time != 0) {
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, currentProcess->p_name, currentProcess->service_time);
+                currentProcess->service_time -= 1;
+            }
         }
         
 
