@@ -18,7 +18,7 @@ void *intialiseMemory(memoryType me) {
     }
 }
 
-void clearProcessMemory(memoryType me, void *state, node_t *process) {
+void clearProcessMemory(memoryType me, void *state, process_t *process) {
     switch(me) {
         case INFINITE: clearProcessMemoryInfinite(state, process); break;
         case CONTIGUOUS: clearProcessMemoryContiguous(state, process); break;
@@ -28,7 +28,7 @@ void clearProcessMemory(memoryType me, void *state, node_t *process) {
 
 }
 
-bool allocateMemory(memoryType me, void *state, node_t *process) {
+bool allocateMemory(memoryType me, void *state, process_t *process) {
     switch(me) {
         case INFINITE: return allocateMemoryInfinite(state, process);
         case CONTIGUOUS: return allocateMemoryContiguous(state, process);
@@ -38,23 +38,10 @@ bool allocateMemory(memoryType me, void *state, node_t *process) {
     }
 }
 memoryType memTypeFromString(char * str) {
-    if (strcmp(str,"infinite"))
-    {
-        return INFINITE;
-    }
-    if (strcmp(str,"first-fit"))
-    {
-        return CONTIGUOUS;
-    }
-    if (strcmp(str,"paged"))
-    {
-        return PAGED;
-    }
-    
-    if (strcmp(str,"virtual"))
-    {
-        return VIRTUAL;
-    }
+    if (strcmp(str,"infinite")) return INFINITE;
+    if (strcmp(str,"first-fit")) return CONTIGUOUS;
+    if (strcmp(str,"paged")) return PAGED;
+    if (strcmp(str,"virtual")) return VIRTUAL;
     //TODO:throw error
     return INFINITE;
 }

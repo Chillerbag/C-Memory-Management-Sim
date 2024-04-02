@@ -15,7 +15,7 @@ typedef enum memoryType {
 memoryType memTypeFromString(char *);
 
 void *intialiseMemory(memoryType me);
-void clearProcessMemory(memoryType me, void *state, node_t *process);
-bool allocateMemory(memoryType me, void *state, node_t *process);
+void clearProcessMemory(memoryType me, void *state, process_t *process);
+bool allocateMemory(memoryType me, void *state, process_t *process);
 #endif
 

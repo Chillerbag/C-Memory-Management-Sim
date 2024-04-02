@@ -5,8 +5,8 @@
 void *intialiseMemoryPaged() {
     return NULL;
 }
-void clearProcessMemoryPaged(void *state, node_t *process) {
+void clearProcessMemoryPaged(void *state, process_t *process) {
 }
-bool allocateMemoryPaged(void *state, node_t *process) {
+bool allocateMemoryPaged(void *state, process_t *process) {
     return true;
 }
