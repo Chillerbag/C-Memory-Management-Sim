@@ -23,7 +23,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
 
         // if the process is done, remove.
         if (currentProcess != NULL && currentProcess->service_time == 0) {
-            printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
+            printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, (process_list->size) -1);
             free(removeHead(process_list));
             clearProcessMemory(mem, memoryManagerData, currentProcess);
 
