@@ -26,7 +26,7 @@ memoryManagerPaged.o: memoryManagerPaged.c memoryManagerPaged.h
 memoryManagerVirtual.o: memoryManagerVirtual.c memoryManagerVirtual.h 
 	gcc -Wall -c memoryManagerVirtual.c 
 
-roundRobin.o: roundRobin.c roundRobin.h 
+roundRobin.o: roundRobin.c roundRobin.h  linkedList.h 
 	gcc -Wall -c roundRobin.c 
 	
 

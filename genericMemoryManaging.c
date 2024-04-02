@@ -38,23 +38,10 @@ bool allocateMemory(memoryType me, void *state, node_t *process) {
     }
 }
 memoryType memTypeFromString(char * str) {
-    if (strcmp(str,"infinite"))
-    {
-        return INFINITE;
-    }
-    if (strcmp(str,"first-fit"))
-    {
-        return CONTIGUOUS;
-    }
-    if (strcmp(str,"paged"))
-    {
-        return PAGED;
-    }
-    
-    if (strcmp(str,"virtual"))
-    {
-        return VIRTUAL;
-    }
+    if (strcmp(str,"infinite")) return INFINITE;
+    if (strcmp(str,"first-fit")) return CONTIGUOUS;
+    if (strcmp(str,"paged")) return PAGED;
+    if (strcmp(str,"virtual")) return VIRTUAL;
     //TODO:throw error
     return INFINITE;
 }

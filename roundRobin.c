@@ -1,7 +1,8 @@
+#include "linkedList.h"
+#include "roundRobin.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "linkedList.h"
 /*
 int roundRobin(list_t *process_list, list_t *not_arrived_list, int quantum) {
     int totalTime = 0;
@@ -48,22 +49,25 @@ int roundRobin(list_t *process_list, list_t *not_arrived_list, int quantum) {
     }
 }
 */
-// Function to get the next process to be executed
-// redundant ? 
-node_t* getNextCurrentProcess(list_t *process_list, int time) {
-    node_t *curNode = process_list->head;
-    while (curNode != NULL && curNode->arrival_time > time) {
-        curNode = curNode->next;
+// Function to do round robin scheduling
+node_t *getNextCurrentProcess(list_t *process_list, int currentProcessTime, int quantum) {
+    node_t *currentProcess = process_list->head;
+    // What process runs? then, we need to check if its hit the quantum limit. If so, kickback.
+    if (currentProcessTime >= quantum) {
+        appendProcess(process_list, currentProcess);
+        removeHead(process_list);
+        currentProcess = process_list->head;
     }
-    return curNode;
+    return currentProcess;
 }
 
 // Function to remove the head of the process list
-void removeHead(list_t *process_list) {
+node_t *removeHead(list_t *process_list) {
     if (process_list->head != NULL) {
         node_t *removedNode = remove_from_list(process_list);
-        free(removedNode);
+        return removedNode;
     }
+    return NULL;
 }
 
 // Function to append a new process to the process list
