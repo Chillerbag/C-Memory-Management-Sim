@@ -44,7 +44,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 newProcess = NULL;
             }
             currentProcessTime = 0;
-            printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, currentProcess->p_name, currentProcess->service_time);
+            printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
         }
         currentProcess = newProcess;
         // Step time
