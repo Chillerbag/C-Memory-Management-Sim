@@ -22,12 +22,18 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
         }
 
         // if the process is done, remove.
-        if (currentProcess != NULL && currentProcess->service_time == 0 && currentProcessTime == quantum) {
-            printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, (process_list->size) -1);
-            free(removeHead(process_list));
-            clearProcessMemory(mem, memoryManagerData, currentProcess);
+        if (currentProcess != NULL && currentProcessTime == quantum) {
+            if (currentProcess->service_time == 0) {
+                printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, (process_list->size) -1);
+                free(removeHead(process_list));
+                clearProcessMemory(mem, memoryManagerData, currentProcess);
+            } else {
+                // If service time is not zero, move the current process to the end of the list
+                appendProcess(process_list, currentProcess);
+                removeHead(process_list);
+            }
 
-            // now, since we have removed a completed task, we say a task is not currently running
+            // Reset current process time since a quantum is finished
             currentProcessTime = 0;
         }
 
