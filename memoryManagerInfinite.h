@@ -2,5 +2,5 @@
 #include <stdbool.h>
 
 void *intialiseMemoryInfinite();
-void clearProcessMemoryInfinite(void *, node_t *);
-bool allocateMemoryInfinite(void *, node_t *);
+void clearProcessMemoryInfinite(void *, process_t *);
+bool allocateMemoryInfinite(void *, process_t *);

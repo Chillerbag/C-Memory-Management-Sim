@@ -25,7 +25,6 @@ void clearProcessMemory(memoryType me, void *state, process_t *process) {
         case PAGED: clearProcessMemoryPaged(state, process); break;
         case VIRTUAL: clearProcessMemoryVirtual(state, process); break;
     }
-
 }
 
 bool allocateMemory(memoryType me, void *state, process_t *process) {
@@ -37,11 +36,12 @@ bool allocateMemory(memoryType me, void *state, process_t *process) {
         default: return true;
     }
 }
+
 memoryType memTypeFromString(char * str) {
-    if (strcmp(str,"infinite")) return INFINITE;
-    if (strcmp(str,"first-fit")) return CONTIGUOUS;
-    if (strcmp(str,"paged")) return PAGED;
-    if (strcmp(str,"virtual")) return VIRTUAL;
+    if (!strcmp(str,"infinite")) return INFINITE;
+    if (!strcmp(str,"first-fit")) return CONTIGUOUS;
+    if (!strcmp(str,"paged")) return PAGED;
+    if (!strcmp(str,"virtual")) return VIRTUAL;
     //TODO:throw error
     return INFINITE;
 }

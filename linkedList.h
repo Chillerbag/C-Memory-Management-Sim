@@ -10,7 +10,7 @@ typedef struct process {
 
 typedef struct node {
     process_t *data;
-    struct node_t *next;
+    struct node *next;
 } node_t;
 
 typedef struct list {

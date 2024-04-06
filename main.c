@@ -51,7 +51,5 @@ int main(int argc, char *argv[]) {
 
     }
     processing(process_list, not_arrived_list, memory_strategy, quantum);
-    //roundRobin(process_list, not_arrived_list, quantum);
-
     return 0;
 }
