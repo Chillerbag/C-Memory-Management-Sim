@@ -21,7 +21,7 @@ process_t *getNextCurrentProcess(list_t *process_list, int currentProcessTime, i
 // Remove the head of the process list
 process_t *removeHead(list_t *process_list) {
     if (process_list->head == NULL) return NULL;
-    node_t *removedNode = remove_from_list(process_list);
+    node_t *removedNode = remove_head_from_list(process_list);
     process_t* removedProcess = removedNode->data;
     free(removedNode);
     return removedProcess;
@@ -36,7 +36,7 @@ void appendProcess(list_t *process_list, process_t *newProcess) {
 // Move processes from not_arrived_list to process_list based on the current time
 void moveArrivedProcesses(list_t *process_list, list_t *not_arrived_list, int time) {
     while (not_arrived_list->head != NULL && not_arrived_list->head->data->arrival_time <= time) {
-        node_t *moveNode = remove_from_list(not_arrived_list);
+        node_t *moveNode = remove_head_from_list(not_arrived_list);
         appendProcess(process_list, moveNode->data);
         free(moveNode);
     }

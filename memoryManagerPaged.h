@@ -4,3 +4,4 @@
 void *intialiseMemoryPaged();
 void clearProcessMemoryPaged(void *, process_t *);
 bool allocateMemoryPaged(void *, process_t *);
+char *stringOfIntArray(int* array,int size);

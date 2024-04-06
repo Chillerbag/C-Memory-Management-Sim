@@ -38,7 +38,7 @@ void add_process_to_list(list_t *list, process_t *process) {
 }
 
 // IMPORTANT: ONCE YOU USE THIS FUNCTION, YOU MUST FREE THE RETURNED NODE
-node_t *remove_from_list(list_t *list) {
+node_t *remove_head_from_list(list_t *list) {
     if (list->size == 0) {
         return NULL;
     }
@@ -46,6 +46,27 @@ node_t *remove_from_list(list_t *list) {
     list->head = node_to_remove->next;
     list->size--;
     return node_to_remove;
+}
+// IMPORTANT: ONCE YOU USE THIS FUNCTION, YOU MUST FREE THE RETURNED NODE
+node_t *remove_match_from_list(list_t *list, char *p_name) {
+    if (list->size == 0)
+        return NULL;
+
+    node_t *current = list->head;
+    node_t *match = current;
+    if (!strcmp(list->head->data->p_name, p_name)) {
+        list->head = NULL;
+    } else {
+        if (current->next == NULL) return NULL;
+        while (!!strcmp(current->next->data->p_name, p_name)) {
+            current = current->next;
+            if (current->next == NULL) return NULL;
+        }
+        match = current->next;
+        current->next = current->next->next;
+    }
+    list->size--;
+    return match;
 }
 
 void free_list(list_t *list) {

@@ -6,6 +6,10 @@
         "linkedlist.h": "c",
         "memorymanagercontiguous.h": "c",
         "string.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }
