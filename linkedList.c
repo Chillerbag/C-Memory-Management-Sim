@@ -55,7 +55,7 @@ node_t *remove_match_from_list(list_t *list, char *p_name) {
     node_t *current = list->head;
     node_t *match = current;
     if (!strcmp(list->head->data->p_name, p_name)) {
-        list->head = NULL;
+        list->head = list->head->next;
     } else {
         if (current->next == NULL) return NULL;
         while (!!strcmp(current->next->data->p_name, p_name)) {
