@@ -2,5 +2,7 @@
 #include <stdbool.h>
 
 void *intialiseMemoryContiguous();
-void clearProcessMemoryContiguous(void *, node_t *);
-bool allocateMemoryContiguous(void *, node_t *);
+void clearProcessMemoryContiguous(void *, process_t *);
+bool allocateMemoryContiguous(void *, process_t *);
+int getAddress(void *state, char *processName);
+int getMemUse(void * state);

@@ -28,12 +28,10 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 free(removeHead(process_list));
                 clearProcessMemory(mem, memoryManagerData, currentProcess);
             } else {
-                // If service time is not zero, move the current process to the end of the list
                 appendProcess(process_list, currentProcess);
                 removeHead(process_list);
             }
 
-            // Reset current process time since a quantum is finished
             currentProcessTime = 0;
         }
 
@@ -50,7 +48,14 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 newProcess = NULL;
             }
             currentProcessTime = 0;
-            printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
+            if (mem == INFINITE) {
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
+            }
+            if (mem == CONTIGUOUS) {
+                //int memUse = getMemUse(memoryManagerData);
+                //int address = getAddress(memoryManagerData, newProcess->p_name);
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d\n", time, newProcess->p_name, newProcess->service_time);
+            }
         }
         currentProcess = newProcess;
         // Step time
