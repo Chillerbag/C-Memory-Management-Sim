@@ -7,112 +7,81 @@
 
 #define MEMORY_SIZE 2048
 
-struct memoryNode {
-    char * p_name;
-    int startIndex;
-    int size;
-    struct memoryNode *next;
-};
+void* intialiseMemoryContiguous() {
+    char** memory = malloc(MEMORY_SIZE * sizeof(char*));
 
-struct continuousMemory {
-    struct memoryNode *allocatedMemory;
-    char memory[MEMORY_SIZE]; 
-};
-
-void *intialiseMemoryContiguous() {
-    struct continuousMemory *memoryManager = malloc(sizeof(struct continuousMemory));
-    memset(memoryManager->memory, 0, MEMORY_SIZE); // initialize memory array to 0
-    return memoryManager;
-}
-
-// TODO debug. 
-void clearProcessMemoryContiguous(void *state, process_t *process) {
-    struct continuousMemory *memoryManager = (struct continuousMemory *)state;
-    struct memoryNode *currentNode = memoryManager->allocatedMemory;
-    struct memoryNode *prevNode = NULL;
-
-    // find the process in the allocatedMemory list
-    while (currentNode != NULL && strcmp(currentNode->p_name, process->p_name) != 0) {
-        prevNode = currentNode;
-        currentNode = currentNode->next;
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+        memory[i] = NULL;
     }
 
-    // if the process is found, remove it from the list and clear the memory
-    if (currentNode != NULL) {
-        if (prevNode != NULL) {
-            prevNode->next = currentNode->next;
-        } else {
-            memoryManager->allocatedMemory = currentNode->next;
+    return memory;
+}
+
+void clearProcessMemoryContiguous(void* state, process_t* process) {
+    char** memory = (char**)state;
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+        if (memory[i] != NULL && strcmp(memory[i], process->p_name) == 0) {
+            free(memory[i]); 
+            memory[i] = NULL;
+        }
+    }
+}
+
+bool allocateMemoryContiguous(void* state, process_t* process) {
+    char** memory = (char**)state;
+    int startIndex = -1; 
+    int emptyCounter = 0;
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+
+        // check if we already are in memory
+        if (memory[i] == process->p_name) {
+            return true;
+        }
+        
+        // check if we are gonna overflow memory:
+        if ((i + process->memory_requirement) > (MEMORY_SIZE - 1)) {
+            return false;
         }
 
-        // clear the memory
-        memset(memoryManager->memory + currentNode->startIndex, 0, currentNode->size);
-        free(currentNode);
-    }
-}
-
-// TODO: this is def broken. Could be to do with p_name memory allocation, though I doubt it. 
-bool allocateMemoryContiguous(void *state, process_t *process) {
-    struct continuousMemory *memoryManager = (struct continuousMemory *)state;
-    int freeCount = 0;
-    int startIndex = -1;
-
-    // find a block of memory that can fit the process
-    for (int i = 0; i < MEMORY_SIZE; i++) {
-        if (memoryManager->memory[i] == 0) {
-            if (freeCount == 0) {
+        if (emptyCounter == process->memory_requirement) {
+            // Make the process occupy memory
+            for (int j = startIndex; j < process->memory_requirement + startIndex; j++) {
+                memory[j] = strdup(process->p_name);
+            }
+            return true;
+        }
+        if (memory[i] == NULL) {
+            if (startIndex == -1) {
                 startIndex = i;
             }
-            freeCount++;
-            if (freeCount == process->memory_requirement) {
-                break;
-            }
+            emptyCounter++;
         } else {
-            freeCount = 0;
+            startIndex = -1;
+            emptyCounter = 0;
         }
     }
-
-    // if a suitable block is found, allocate it and update the allocatedMemory list
-    if (freeCount == process->memory_requirement) {
-        struct memoryNode *newNode = malloc(sizeof(struct memoryNode));
-        newNode->startIndex = startIndex;
-        newNode->size = process->memory_requirement;
-        newNode->next = memoryManager->allocatedMemory;
-        memoryManager->allocatedMemory = newNode;
-
-        // mark the memory blocks as occupied
-        memset(memoryManager->memory + startIndex, 1, process->memory_requirement);
-
-        return true;
-    }
-
     return false;
 }
 
-
-// TODO: fix these. they cause segfaults for some reason. 
-int getMemUse(void * state) {
-    struct continuousMemory *memoryManager = (struct continuousMemory *)state;
-    struct memoryNode *currentNode = memoryManager->allocatedMemory;
-    int total = 0;
-
-    while (currentNode != NULL) {
-        total += currentNode->size; 
-        currentNode = currentNode->next;
+int getMemUse(void* state) {
+    int memCount = 0;
+    int memUse;
+    char** memory = (char**)state;
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+        if (memory[i] != NULL) {
+            memCount += 1;
+        }
     }
-    return (total / MEMORY_SIZE) * 100;
+    memUse = (memCount * 100) / MEMORY_SIZE; 
+    return memUse;
 }
 
-int getAddress(void *state, char *processName) {
-    struct continuousMemory *memoryManager = (struct continuousMemory *)state;
-    struct memoryNode *currentNode = memoryManager->allocatedMemory;
-
-    while (currentNode != NULL) {
-        if (strcmp(currentNode->p_name, processName) == 0) {
-            return currentNode->startIndex;
+int getAddress(void* state, char* processName) {
+    char** memory = (char**)state;
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+        if (memory[i] != NULL && strcmp(memory[i], processName) == 0) {
+            return i;
         }
-        currentNode = currentNode->next;
     }
-
-    return -1;
+    return -1; 
 }

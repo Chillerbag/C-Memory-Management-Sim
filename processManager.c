@@ -1,6 +1,7 @@
 
 #include "processManager.h"
 #include "genericMemoryManaging.h"
+#include "memoryManagerContiguous.h"
 #include "linkedList.h"
 #include "roundRobin.h"
 #include <stdbool.h>
@@ -53,9 +54,9 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
             }
             else if (mem == CONTIGUOUS) {
-                //int memUse = getMemUse(memoryManagerData);
-                //int address = getAddress(memoryManagerData, newProcess->p_name);
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%\n", time, newProcess->p_name, newProcess->service_time);
+                int memUse = getMemUse(memoryManagerData);
+                int address = getAddress(memoryManagerData, newProcess->p_name);
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, newProcess->p_name, newProcess->service_time, memUse, address);
             }            
         }
         currentProcess = newProcess;
