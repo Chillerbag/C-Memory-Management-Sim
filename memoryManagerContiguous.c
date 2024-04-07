@@ -31,13 +31,15 @@ bool allocateMemoryContiguous(void* state, process_t* process) {
     char** memory = (char**)state;
     int startIndex = -1; 
     int emptyCounter = 0;
-    for (int i = 0; i < MEMORY_SIZE; i++) {
 
-        // check if we already are in memory
-        if (memory[i] == process->p_name) {
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+    // check if we already exist in memory 
+        if (memory[i] != NULL && strcmp(memory[i], process->p_name) == 0) {
             return true;
         }
-        
+    }
+
+    for (int i = 0; i < MEMORY_SIZE; i++) {       
         // check if we are gonna overflow memory:
         if ((i + process->memory_requirement) > (MEMORY_SIZE - 1)) {
             return false;
@@ -65,7 +67,7 @@ bool allocateMemoryContiguous(void* state, process_t* process) {
 
 int getMemUse(void* state) {
     int memCount = 0;
-    int memUse;
+    int memUse = 0;
     char** memory = (char**)state;
     for (int i = 0; i < MEMORY_SIZE; i++) {
         if (memory[i] != NULL) {
