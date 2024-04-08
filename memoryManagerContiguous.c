@@ -31,32 +31,37 @@ bool allocateMemoryContiguous(void* state, process_t* process) {
     char** memory = (char**)state;
     int startIndex = -1; 
     int emptyCounter = 0;
+    //printf("now allocating: %s\n", process->p_name);
 
-    for (int i = 0; i < MEMORY_SIZE; i++) {
+    for (int x = 0; x < MEMORY_SIZE; x++) {
     // check if we already exist in memory 
-        if (memory[i] != NULL && strcmp(memory[i], process->p_name) == 0) {
+        if (memory[x] != NULL && strcmp(memory[x], process->p_name) == 0) {
+            //printf("hit, %s\n", process->p_name);
             return true;
         }
     }
 
     for (int i = 0; i < MEMORY_SIZE; i++) {       
         // check if we are gonna overflow memory:
-        if ((i + process->memory_requirement) > (MEMORY_SIZE - 1)) {
-            return false;
-        }
+        //if ((i + process->memory_requirement) > (MEMORY_SIZE - 1)) {
+        //    printf("process will overflow: %s\n", process->p_name);
+        //    return false;
+        //}
 
-        if (emptyCounter == process->memory_requirement) {
-            // Make the process occupy memory
-            for (int j = startIndex; j < process->memory_requirement + startIndex; j++) {
-                memory[j] = strdup(process->p_name);
-            }
-            return true;
-        }
         if (memory[i] == NULL) {
             if (startIndex == -1) {
                 startIndex = i;
             }
             emptyCounter++;
+            if (emptyCounter == process->memory_requirement) {
+            // Make the process occupy memory
+                for (int j = startIndex; j <= process->memory_requirement + startIndex - 1; j++) {
+                    //printf("%d\n", j);
+                    memory[j] = strdup(process->p_name);
+                    //printf("%s\n", memory[j]);
+                }
+                return true;
+            }
         } else {
             startIndex = -1;
             emptyCounter = 0;
