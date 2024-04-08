@@ -1,8 +1,8 @@
 
 #include "processManager.h"
 #include "genericMemoryManaging.h"
-#include "memoryManagerContiguous.h"
 #include "linkedList.h"
+#include "memoryManagerContiguous.h"
 #include "roundRobin.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -34,27 +34,24 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             }
         }
 
-        process_t *newProcess = NULL;
-        while (newProcess == NULL) {
-            // Determine the process that runs in this cycle
-            newProcess = getNextCurrentProcess(process_list);            
-            // don't worry about memory management if nothing run
-            if (newProcess == NULL) break;
+        process_t *newProcess = getNextCurrentProcess(process_list);
+
+        // don't worry about memory management if nothing is being run or we aren't derunning the process
+        if (newProcess != NULL && newProcess != currentProcess) {
             // kickback process if we can't allocate its memory
-            if (!allocateMemory(mem, memoryManagerData, newProcess, time)) {
+            while (!allocateMemory(mem, memoryManagerData, newProcess, time)) {
                 removeHead(process_list);
                 appendProcess(process_list, newProcess);
-                newProcess = NULL;
+                newProcess = getNextCurrentProcess(process_list);
             }
-        }          
+        }
         currentProcess = newProcess;
-        
+
         // Step time
-        if (currentProcess !=NULL) {
+        if (currentProcess != NULL) {
             currentProcess->service_time -= quantum;
             currentProcessTime += quantum;
         }
         time += quantum;
-        
     }
 }
