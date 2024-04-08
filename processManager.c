@@ -27,6 +27,9 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             if (currentProcess->service_time == 0) {
                 removeHead(process_list);
                 clearProcessMemory(mem, memoryManagerData, currentProcess);
+                while (time % quantum != 0) {
+                    time += 1;
+                }
                 printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
                 free(currentProcess);
             } else {
@@ -54,6 +57,9 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
             }
             else if (mem == CONTIGUOUS) {
+                while (time % quantum != 0) {
+                    time += 1;
+                }
                 int memUse = getMemUse(memoryManagerData);
                 int address = getAddress(memoryManagerData, newProcess->p_name);
                 printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, newProcess->p_name, newProcess->service_time, memUse, address);
