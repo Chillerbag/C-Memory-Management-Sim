@@ -36,19 +36,20 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
 
             currentProcessTime = 0;
         }
-
+        printf("a%d\n",time);
         process_t *newProcess = NULL;
         while (newProcess == NULL) {
             // Determine the process that runs in this cycle
             newProcess = getNextCurrentProcess(process_list, currentProcessTime, quantum);            
             // don't worry about memory management if nothing or the same thing is being run
             if (newProcess == NULL || newProcess==currentProcess) break;
+            currentProcessTime = 0;
             if (!allocateMemory(mem, memoryManagerData, newProcess)) {
                 appendProcess(process_list, currentProcess);
                 removeHead(process_list);
                 newProcess = NULL;
+                continue;
             }
-            currentProcessTime = 0;
             //TODO:Move this printing into allocate Memory calls? see paged example, we will need to pass time everywhere
             if (mem == INFINITE) {
                 printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
