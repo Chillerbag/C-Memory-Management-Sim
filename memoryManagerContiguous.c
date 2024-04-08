@@ -79,7 +79,10 @@ int getMemUse(void* state) {
             memCount += 1;
         }
     }
-    memUse = (memCount * 100) / MEMORY_SIZE; 
+    memUse = (memCount * 100) / MEMORY_SIZE;
+    if ((memCount * 100) % MEMORY_SIZE != 0) {
+        memUse += 1;
+    }
     return memUse;
 }
 
