@@ -17,7 +17,7 @@ void* intialiseMemoryContiguous() {
     return memory;
 }
 
-void clearProcessMemoryContiguous(void* state, process_t* process) {
+void clearProcessMemoryContiguous(void* state, process_t* process, int time) {
     char** memory = (char**)state;
     for (int i = 0; i < MEMORY_SIZE; i++) {
         if (memory[i] != NULL && strcmp(memory[i], process->p_name) == 0) {
@@ -27,7 +27,7 @@ void clearProcessMemoryContiguous(void* state, process_t* process) {
     }
 }
 
-bool allocateMemoryContiguous(void* state, process_t* process) {
+bool allocateMemoryContiguous(void* state, process_t* process, int time) {
     char** memory = (char**)state;
     int startIndex = -1; 
     int emptyCounter = 0;
@@ -36,7 +36,9 @@ bool allocateMemoryContiguous(void* state, process_t* process) {
     for (int x = 0; x < MEMORY_SIZE; x++) {
     // check if we already exist in memory 
         if (memory[x] != NULL && strcmp(memory[x], process->p_name) == 0) {
-            //printf("hit, %s\n", process->p_name);
+            int memUse = getMemUse(memory);
+            int address = getAddress(memory, process->p_name);
+            printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->service_time, memUse, address);
             return true;
         }
     }
@@ -60,6 +62,9 @@ bool allocateMemoryContiguous(void* state, process_t* process) {
                     memory[j] = strdup(process->p_name);
                     //printf("%s\n", memory[j]);
                 }
+                int memUse = getMemUse(memory);
+                int address = getAddress(memory, process->p_name);
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->service_time, memUse, address);
                 return true;
             }
         } else {
@@ -70,10 +75,9 @@ bool allocateMemoryContiguous(void* state, process_t* process) {
     return false;
 }
 
-int getMemUse(void* state) {
+int getMemUse(char** memory) {
     int memCount = 0;
     int memUse = 0;
-    char** memory = (char**)state;
     for (int i = 0; i < MEMORY_SIZE; i++) {
         if (memory[i] != NULL) {
             memCount += 1;
@@ -86,8 +90,7 @@ int getMemUse(void* state) {
     return memUse;
 }
 
-int getAddress(void* state, char* processName) {
-    char** memory = (char**)state;
+int getAddress(char** memory, char* processName) {
     for (int i = 0; i < MEMORY_SIZE; i++) {
         if (memory[i] != NULL && strcmp(memory[i], processName) == 0) {
             return i;

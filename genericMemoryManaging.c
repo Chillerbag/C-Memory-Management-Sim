@@ -18,21 +18,21 @@ void *intialiseMemory(memoryType me) {
     }
 }
 
-void clearProcessMemory(memoryType me, void *state, process_t *process) {
+void clearProcessMemory(memoryType me, void *state, process_t *process, int time) {
     switch(me) {
-        case INFINITE: clearProcessMemoryInfinite(state, process); break;
-        case CONTIGUOUS: clearProcessMemoryContiguous(state, process); break;
-        case PAGED: clearProcessMemoryPaged(state, process); break;
-        case VIRTUAL: clearProcessMemoryVirtual(state, process); break;
+        case INFINITE: clearProcessMemoryInfinite(state, process, time); break;
+        case CONTIGUOUS: clearProcessMemoryContiguous(state, process, time); break;
+        case PAGED: clearProcessMemoryPaged(state, process, time); break;
+        case VIRTUAL: clearProcessMemoryVirtual(state, process, time); break;
     }
 }
 
-bool allocateMemory(memoryType me, void *state, process_t *process) {
+bool allocateMemory(memoryType me, void *state, process_t *process, int time) {
     switch(me) {
-        case INFINITE: return allocateMemoryInfinite(state, process);
-        case CONTIGUOUS: return allocateMemoryContiguous(state, process);
-        case PAGED: return allocateMemoryPaged(state, process);
-        case VIRTUAL: return allocateMemoryVirtual(state, process);
+        case INFINITE: return allocateMemoryInfinite(state, process, time);
+        case CONTIGUOUS: return allocateMemoryContiguous(state, process, time);
+        case PAGED: return allocateMemoryPaged(state, process, time);
+        case VIRTUAL: return allocateMemoryVirtual(state, process, time);
         default: return true;
     }
 }

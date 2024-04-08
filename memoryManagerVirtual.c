@@ -5,8 +5,8 @@
 void *intialiseMemoryVirtual() {
     return NULL;
 }
-void clearProcessMemoryVirtual(void *state, process_t *process) {
+void clearProcessMemoryVirtual(void *state, process_t *process, int time) {
 }
-bool allocateMemoryVirtual(void *state, process_t *process) {
+bool allocateMemoryVirtual(void *state, process_t *process, int time) {
     return true;
 }

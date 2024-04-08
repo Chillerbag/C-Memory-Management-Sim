@@ -26,7 +26,7 @@ void *intialiseMemoryPaged() {
     state->freePages = PAGE_COUNT;
     return state;
 }
-void clearProcessMemoryPaged(void *statev, process_t *process) {
+void clearProcessMemoryPaged(void *statev, process_t *process, int time) {
     struct pagedMemoryState *state = (struct pagedMemoryState *)statev;
     // clear pages
     int j = 0;
@@ -40,7 +40,7 @@ void clearProcessMemoryPaged(void *statev, process_t *process) {
         }
     }
     char *array = stringOfIntArray(clearedFrames, totalPages);
-    printf(",EVICTED,evicted-frames=%s\n", array);
+    printf("%d,EVICTED,evicted-frames=%s\n", time, array);
     free(array);
     free(clearedFrames);
 
@@ -55,7 +55,7 @@ void clearProcessMemoryPaged(void *statev, process_t *process) {
     free(toBeFreed);
 }
 
-bool allocateMemoryPaged(void *statev, process_t *process) {
+bool allocateMemoryPaged(void *statev, process_t *process, int time) {
     struct pagedMemoryState *state = (struct pagedMemoryState *)statev;
     // Is it already in memory?
     node_t *matchNode = remove_match_from_list(state->processesWithMemory, process->p_name);
@@ -71,7 +71,7 @@ bool allocateMemoryPaged(void *statev, process_t *process) {
             }
         }
         char *array = stringOfIntArray(allocatedFrames, requiredPages);
-        printf(",RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
+        printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
         free(array);
         free(allocatedFrames);
         return true;
@@ -79,7 +79,7 @@ bool allocateMemoryPaged(void *statev, process_t *process) {
     // if we dont have space, make some
     while (state->freePages < requiredPages) {
         node_t *clearedProcessNode = remove_head_from_list(state->processesWithMemory);
-        clearProcessMemoryPaged(state, clearedProcessNode->data);
+        clearProcessMemoryPaged(state, clearedProcessNode->data, time);
         free(clearedProcessNode->data->p_name);
         free(clearedProcessNode->data);
         free(clearedProcessNode);
@@ -97,7 +97,7 @@ bool allocateMemoryPaged(void *statev, process_t *process) {
     state->freePages -= requiredPages;
     add_to_list(state->processesWithMemory, -1, process->p_name, -1, process->memory_requirement);
     char *array = stringOfIntArray(allocatedFrames, requiredPages);
-    printf(",RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
+    printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
     free(array);
     free(allocatedFrames);
 

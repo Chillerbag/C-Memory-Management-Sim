@@ -2,5 +2,5 @@
 #include <stdbool.h>
 
 void *intialiseMemoryVirtual();
-void clearProcessMemoryVirtual(void *, process_t *);
-bool allocateMemoryVirtual(void *, process_t *);
+void clearProcessMemoryVirtual(void *, process_t *, int);
+bool allocateMemoryVirtual(void *, process_t *, int);

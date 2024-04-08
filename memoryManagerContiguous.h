@@ -6,7 +6,7 @@
 
 
 void *intialiseMemoryContiguous();
-void clearProcessMemoryContiguous(void *, process_t *);
-bool allocateMemoryContiguous(void *, process_t *);
-int getAddress(void *state, char *processName);
-int getMemUse(void * state);
+void clearProcessMemoryContiguous(void *, process_t *, int);
+bool allocateMemoryContiguous(void *, process_t *, int);
+int getAddress(char** memory, char *processName);
+int getMemUse(char** memory);

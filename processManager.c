@@ -28,12 +28,11 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             removeHead(process_list);
             if (currentProcess->service_time <= 0) {
                 printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
-                clearProcessMemory(mem, memoryManagerData, currentProcess);
+                clearProcessMemory(mem, memoryManagerData, currentProcess, time);
                 free(currentProcess);
             } else {
                 appendProcess(process_list, currentProcess);
             }
-
         }
 
         process_t *newProcess = NULL;
@@ -43,21 +42,12 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             // don't worry about memory management if nothing or the same thing is being run
             if (newProcess == NULL || newProcess==currentProcess) break;
             // kickback process if we can't allocate its memory
-            if (!allocateMemory(mem, memoryManagerData, newProcess)) {
+            if (!allocateMemory(mem, memoryManagerData, newProcess, time)) {
                 removeHead(process_list);
                 appendProcess(process_list, newProcess);
                 newProcess = NULL;
             }
-        }
-        // //TODO:Move this printing into allocate Memory calls? see paged example, we will need to pass time everywhere
-        // if (mem == INFINITE) {
-        //     printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
-        // }
-        // else if (mem == CONTIGUOUS) {
-        //     int memUse = getMemUse(memoryManagerData);
-        //     int address = getAddress(memoryManagerData, newProcess->p_name);
-        //     printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, newProcess->p_name, newProcess->service_time, memUse, address);
-        // }            
+        }          
         currentProcess = newProcess;
         
         // Step time
