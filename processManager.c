@@ -14,6 +14,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
     process_t *currentProcess = NULL;
     int time = 0;
     int currentProcessTime = 0;
+    printf("asd\n");
 
     while (process_list->size != 0 || not_arrived_list->size != 0) {
 
@@ -22,59 +23,49 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             moveArrivedProcesses(process_list, not_arrived_list, time);
         }
 
-        // if the process is done, remove.
-        if (currentProcess != NULL && currentProcessTime == quantum) {
-            if (currentProcess->service_time == 0) {
-                removeHead(process_list);
-                clearProcessMemory(mem, memoryManagerData, currentProcess);
-                while (time % quantum != 0) {
-                    time += 1;
-                }
+        // remove process, reappend it if not finished
+        if (currentProcess != NULL) {
+            removeHead(process_list);
+            if (currentProcess->service_time <= 0) {
                 printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
+                clearProcessMemory(mem, memoryManagerData, currentProcess);
                 free(currentProcess);
             } else {
                 appendProcess(process_list, currentProcess);
-                removeHead(process_list);
             }
 
-            currentProcessTime = 0;
         }
+
         process_t *newProcess = NULL;
         while (newProcess == NULL) {
             // Determine the process that runs in this cycle
-            newProcess = getNextCurrentProcess(process_list, currentProcessTime, quantum);            
+            newProcess = getNextCurrentProcess(process_list);            
             // don't worry about memory management if nothing or the same thing is being run
             if (newProcess == NULL || newProcess==currentProcess) break;
-            currentProcessTime = 0;
+            // kickback process if we can't allocate its memory
             if (!allocateMemory(mem, memoryManagerData, newProcess)) {
-                appendProcess(process_list, currentProcess);
                 removeHead(process_list);
+                appendProcess(process_list, newProcess);
                 newProcess = NULL;
-                continue;
             }
-            //TODO:Move this printing into allocate Memory calls? see paged example, we will need to pass time everywhere
-            if (mem == INFINITE) {
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
-            }
-            else if (mem == CONTIGUOUS) {
-                while (time % quantum != 0) {
-                    time += 1;
-                }
-                int memUse = getMemUse(memoryManagerData);
-                int address = getAddress(memoryManagerData, newProcess->p_name);
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, newProcess->p_name, newProcess->service_time, memUse, address);
-            }            
         }
+        // //TODO:Move this printing into allocate Memory calls? see paged example, we will need to pass time everywhere
+        // if (mem == INFINITE) {
+        //     printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, newProcess->p_name, newProcess->service_time);
+        // }
+        // else if (mem == CONTIGUOUS) {
+        //     int memUse = getMemUse(memoryManagerData);
+        //     int address = getAddress(memoryManagerData, newProcess->p_name);
+        //     printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, newProcess->p_name, newProcess->service_time, memUse, address);
+        // }            
         currentProcess = newProcess;
+        
         // Step time
         if (currentProcess !=NULL) {
-            if (currentProcess->service_time != 0) {
-                currentProcess->service_time -= 1;
-            }
+            currentProcess->service_time -= quantum;
+            currentProcessTime += quantum;
         }
+        time += quantum;
         
-
-        time += 1;
-        currentProcessTime += 1;
     }
 }

@@ -96,7 +96,6 @@ bool allocateMemoryPaged(void *statev, process_t *process) {
     }
     state->freePages -= requiredPages;
     add_to_list(state->processesWithMemory, -1, process->p_name, -1, process->memory_requirement);
-    // TODO:Fix off by one or rounding error with the percent
     char *array = stringOfIntArray(allocatedFrames, requiredPages);
     printf(",RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
     free(array);
