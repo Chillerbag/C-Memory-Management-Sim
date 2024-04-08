@@ -14,7 +14,6 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
     process_t *currentProcess = NULL;
     int time = 0;
     int currentProcessTime = 0;
-    printf("asd\n");
 
     while (process_list->size != 0 || not_arrived_list->size != 0) {
 

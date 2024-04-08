@@ -29,7 +29,6 @@ void appendProcess(list_t *process_list, process_t *newProcess) {
 void moveArrivedProcesses(list_t *process_list, list_t *not_arrived_list, int time) {
     while (not_arrived_list->head != NULL && not_arrived_list->head->data->arrival_time <= time) {
         node_t *moveNode = remove_head_from_list(not_arrived_list);
-        printf("asdasd%s\n",moveNode->data->p_name);
         appendProcess(process_list, moveNode->data);
         free(moveNode);
     }
