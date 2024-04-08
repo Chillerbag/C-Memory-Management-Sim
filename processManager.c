@@ -36,7 +36,6 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
 
             currentProcessTime = 0;
         }
-        printf("a%d\n",time);
         process_t *newProcess = NULL;
         while (newProcess == NULL) {
             // Determine the process that runs in this cycle
