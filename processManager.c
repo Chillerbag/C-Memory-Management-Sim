@@ -26,8 +26,8 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
         if (currentProcess != NULL) {
             removeHead(process_list);
             if (currentProcess->service_time <= 0) {
-                printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
                 clearProcessMemory(mem, memoryManagerData, currentProcess, time);
+                printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
                 free(currentProcess);
             } else {
                 appendProcess(process_list, currentProcess);
@@ -38,8 +38,8 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
         while (newProcess == NULL) {
             // Determine the process that runs in this cycle
             newProcess = getNextCurrentProcess(process_list);            
-            // don't worry about memory management if nothing or the same thing is being run
-            if (newProcess == NULL || newProcess==currentProcess) break;
+            // don't worry about memory management if nothing run
+            if (newProcess == NULL) break;
             // kickback process if we can't allocate its memory
             if (!allocateMemory(mem, memoryManagerData, newProcess, time)) {
                 removeHead(process_list);
