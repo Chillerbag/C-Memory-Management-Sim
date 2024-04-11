@@ -1,4 +1,5 @@
 #include "memoryManagerVirtual.h"
+#include "memoryManagerPaged.h"
 #include "linkedList.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -62,15 +63,15 @@ void clearProcessMemoryVirtual(void *statev, process_t *process, int time) {
 
 bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
     struct pagedMemoryState *state = (struct pagedMemoryState *)statev;
-    int minRequiredPages;
+    int minRequiredPages = 0;
     // Is it already in memory?
     node_t *matchNode = remove_match_from_list(state->processesWithMemory, process->p_name);
     int requiredPages = (process->memory_requirement + 3) / 4;
     if (requiredPages < 4) {
-        int minRequiredPages = requiredPages;
+        minRequiredPages = requiredPages;
     }
     else {
-        int minRequiredPages = 4;
+        minRequiredPages = 4;
     }
 
     if (NULL != matchNode) {
@@ -92,7 +93,7 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
     // if we dont have space, make some
     while (state->freePages < minRequiredPages) {
         node_t *clearedProcessNode = remove_head_from_list(state->processesWithMemory);
-        clearProcessMemoryPaged(state, clearedProcessNode->data, time);
+        clearProcessMemoryVirtual(state, clearedProcessNode->data, time);
         free(clearedProcessNode->data->p_name);
         free(clearedProcessNode->data);
         free(clearedProcessNode);
@@ -121,3 +122,4 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
 
     return true;
 }
+
