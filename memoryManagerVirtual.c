@@ -34,7 +34,7 @@ void clearProcessMemoryVirtual(void *statev, process_t *process, int time, int m
     int j = 0;
     int *clearedFrames = malloc(PAGE_COUNT * sizeof(int)); // Allocate maximum possible frames
 
-    for (int i = 0; i < PAGE_COUNT; i++) {
+    for (int i = 0; i < PAGE_COUNT && j < memoryReq; i++) {
         if (state->pageFrames[i] != NULL && !strcmp(process->p_name, state->pageFrames[i])) {
             state->pageFrames[i] = NULL;
             clearedFrames[j++] = i;
