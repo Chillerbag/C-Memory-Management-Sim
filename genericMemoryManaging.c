@@ -23,7 +23,7 @@ void clearProcessMemory(memoryType me, void *state, process_t *process, int time
         case INFINITE: clearProcessMemoryInfinite(state, process, time); break;
         case CONTIGUOUS: clearProcessMemoryContiguous(state, process, time); break;
         case PAGED: clearProcessMemoryPaged(state, process, time); break;
-        case VIRTUAL: clearProcessMemoryVirtual(state, process, time); break;
+        case VIRTUAL: clearProcessMemoryVirtual(state, process, time, 4 * (process->memory_requirement)); break;
     }
 }
 
