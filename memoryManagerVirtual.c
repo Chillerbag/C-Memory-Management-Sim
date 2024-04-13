@@ -38,15 +38,15 @@ void clearProcessMemoryVirtual(void *statev, process_t *process, int time, int m
         if (state->pageFrames[i] != NULL && !strcmp(process->p_name, state->pageFrames[i])) {
             state->pageFrames[i] = NULL;
             clearedFrames[j++] = i;
+            state->freePages++; // attempt to fix issues around RUNNING print
         }    
     }
-    clearedFrames = realloc(clearedFrames, j * sizeof(int)); 
+    clearedFrames = realloc(clearedFrames, j * sizeof(int)); // make the cleared frames the right size
     char *array = stringOfIntArray(clearedFrames, j);
     printf("%d,EVICTED,evicted-frames=%s\n", time, array);
     free(array);
     free(clearedFrames);
 
-    state->freePages += j; 
     node_t *toBeFreed = remove_match_from_list(state->processesWithMemory, process->p_name);
     if (toBeFreed == NULL)
         return;
@@ -63,21 +63,18 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
     // Is it already in memory?
     node_t *matchNode = remove_match_from_list(state->processesWithMemory, process->p_name);
     int requiredPages = (process->memory_requirement + 3) / 4;
-    if (requiredPages < 4) {
-        minRequiredPages = requiredPages;
-    }
-    else {
-        minRequiredPages = 4;
-    }
+    minRequiredPages = requiredPages < 4 ? requiredPages : 4;
 
     if (NULL != matchNode) {
         add_process_to_list(state->processesWithMemory, matchNode->data);
         free(matchNode);
         int allocatedPages = requiredPages;
         int *allocatedFrames = malloc(requiredPages * sizeof(int));
+        int allocatedIndex = 0;
         for (int i = 0; allocatedPages > 0 && i < PAGE_COUNT; i++) {
             if (state->pageFrames[i] != NULL && !strcmp(process->p_name, state->pageFrames[i])) {
-                allocatedFrames[requiredPages - allocatedPages--] = i;
+                allocatedFrames[allocatedIndex++] = i;
+                --allocatedPages; // attempt to index better to print properly
             }
         }
         char *array = stringOfIntArray(allocatedFrames, requiredPages);
@@ -103,10 +100,12 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
         toBeAllocated = requiredPages;
     }
     int *allocatedFrames = malloc(toBeAllocated * sizeof(int));
+    int allocatedIndex = 0;
     for (int i = 0; toBeAllocated > 0 && i < PAGE_COUNT; i++) {
         if (state->pageFrames[i] == NULL) {
             state->pageFrames[i] = process->p_name;
-            allocatedFrames[--toBeAllocated] = i; // Decrement toBeAllocated before using it as an index
+             allocatedFrames[allocatedIndex++] = i; 
+            --toBeAllocated; // attempt to index better
         }
     }
     add_to_list(state->processesWithMemory, -1, process->p_name, -1, process->memory_requirement);
@@ -114,7 +113,7 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
     if (state->freePages < 0) {
         state->freePages = 0;
     }
-    char *array = stringOfIntArray(allocatedFrames, requiredPages); // Print requiredPages number of frames
+    char *array = stringOfIntArray(allocatedFrames, allocatedIndex); // changed to allocatedIndex to try and print the correct length
     printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
     free(array);
     free(allocatedFrames);
