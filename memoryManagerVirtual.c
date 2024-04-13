@@ -34,15 +34,17 @@ void clearProcessMemoryVirtual(void *statev, process_t *process, int time, int m
     int j = 0;
     int *clearedFrames = malloc(PAGE_COUNT * sizeof(int)); // Allocate maximum possible frames
 
-    for (int i = 0; i < PAGE_COUNT && j < memoryReq; i++) {
+    for (int i = 0; i < PAGE_COUNT; i++) {
         if (state->pageFrames[i] != NULL && !strcmp(process->p_name, state->pageFrames[i])) {
             state->pageFrames[i] = NULL;
             clearedFrames[j++] = i;
             state->freePages++; // attempt to fix issues around RUNNING print
         }    
     }
-    clearedFrames = realloc(clearedFrames, j * sizeof(int)); // make the cleared frames the right size
-    char *array = stringOfIntArray(clearedFrames, j);
+    j--;
+
+    clearedFrames = realloc(clearedFrames, (memoryReq) * sizeof(int)); 
+    char *array = stringOfIntArray(clearedFrames, j > memoryReq ? memoryReq : j);
     printf("%d,EVICTED,evicted-frames=%s\n", time, array);
     free(array);
     free(clearedFrames);
