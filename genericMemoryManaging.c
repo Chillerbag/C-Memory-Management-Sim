@@ -37,6 +37,15 @@ bool allocateMemory(memoryType me, void *state, process_t *process, int time) {
     }
 }
 
+void cleanMemory(memoryType me, void *state) {
+    switch(me) {
+        case INFINITE: return cleanMemoryInfinite(state);
+        case CONTIGUOUS: return cleanMemoryContiguous(state);
+        case PAGED: return cleanMemoryPaged(state);
+        case VIRTUAL: return cleanMemoryVirtual(state);
+    }
+}
+
 memoryType memTypeFromString(char * str) {
     if (!strcmp(str,"infinite")) return INFINITE;
     if (!strcmp(str,"first-fit")) return CONTIGUOUS;

@@ -130,4 +130,9 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
 
     return true;
 }
+void cleanMemoryVirtual(void * state) {
+    struct pagedMemoryState *memory = (struct pagedMemoryState *)state;
+    free_list(memory->processesWithMemory);
+    free(memory);
+}
 

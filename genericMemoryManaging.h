@@ -17,4 +17,5 @@ memoryType memTypeFromString(char *);
 void *intialiseMemory(memoryType me);
 void clearProcessMemory(memoryType me, void *state, process_t *process, int time);
 bool allocateMemory(memoryType me, void *state, process_t *process, int time);
+void cleanMemory(memoryType me, void *state);
 #endif

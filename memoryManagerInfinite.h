@@ -4,3 +4,4 @@
 void *intialiseMemoryInfinite();
 void clearProcessMemoryInfinite(void *, process_t *, int);
 bool allocateMemoryInfinite(void *, process_t *, int);
+void cleanMemoryInfinite(void *);

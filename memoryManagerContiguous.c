@@ -98,3 +98,10 @@ int getAddress(char** memory, char* processName) {
     }
     return -1; 
 }
+void cleanMemoryContiguous(void * state) {
+    char** memory = (char**)state;
+    for (int i = 0; i < MEMORY_SIZE; i++) {
+        free(memory[i]);
+    }
+    free(memory);
+}

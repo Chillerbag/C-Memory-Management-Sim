@@ -28,6 +28,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
             if (currentProcess->service_time <= 0) {
                 clearProcessMemory(mem, memoryManagerData, currentProcess, time);
                 printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
+                free(currentProcess->p_name);
                 free(currentProcess);
             } else {
                 appendProcess(process_list, currentProcess);
@@ -54,4 +55,6 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
         }
         time += quantum;
     }
+    // TODO: clean up function
+    cleanMemory(mem, memoryManagerData);
 }

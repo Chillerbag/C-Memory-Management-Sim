@@ -117,3 +117,8 @@ char *stringOfIntArray(int *array, int size) {
     sprintf(&str[index - 1], "]");
     return str;
 }
+void cleanMemoryPaged(void * state) {
+    struct pagedMemoryState *memory = (struct pagedMemoryState *)state;
+    free_list(memory->processesWithMemory);
+    free(memory);
+}

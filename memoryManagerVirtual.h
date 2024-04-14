@@ -7,3 +7,4 @@
 void *intialiseMemoryVirtual();
 void clearProcessMemoryVirtual(void *, process_t *, int, int);
 bool allocateMemoryVirtual(void *, process_t *, int);
+void cleanMemoryVirtual(void *);
