@@ -72,7 +72,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
 
     averageTurnAround /= totalProcesses;
     averageOverhead /= totalProcesses;
-    printf("Turnaround time %f\n", averageTurnAround);
+    printf("Turnaround time %.0f\n", averageTurnAround + 0.5f);
     printf("Time overhead %.2f %.2f\n", maxOverhead, averageOverhead);
     printf("Makespan %d\n", time);
 }
