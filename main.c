@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     int memory_requirement;
 
 
-       // Initialize variables to store the argument values
+    // Initialize variables to store the argument values
     char *filename = NULL;
     memoryType memory_strategy= -1;
     int quantum = 0;
@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(argv[i], "-f") == 0) {
             filename = argv[i + 1];
         } else if (strcmp(argv[i], "-m") == 0) {
+            // calls a function to convert this to a memoryType enum value. 
             memory_strategy = memTypeFromString(argv[i + 1]);
         } else if (strcmp(argv[i], "-q") == 0) {
             quantum = atoi(argv[i + 1]);

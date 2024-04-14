@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// this file contains a set of functions for doing round robin processes in processManager.c
+
 // Do round robin scheduling given the current process run time and a set quantum
 process_t *getNextCurrentProcess(list_t *process_list) {
     if (process_list==NULL || process_list->head==NULL) return NULL;
@@ -22,7 +24,6 @@ process_t *removeHead(list_t *process_list) {
 // Append a new process to the process list
 void appendProcess(list_t *process_list, process_t *newProcess) {
     add_process_to_list(process_list, newProcess);
-    // free(newProcess);
 }
 
 // Move processes from not_arrived_list to process_list based on the current time
