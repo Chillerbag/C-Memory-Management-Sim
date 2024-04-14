@@ -67,6 +67,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
         }
         time += quantum;
     }
+    time -= quantum;
     // TODO: clean up function
     cleanMemory(mem, memoryManagerData);
 
