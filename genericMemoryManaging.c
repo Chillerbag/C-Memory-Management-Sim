@@ -8,6 +8,12 @@
 #include <stdio.h>
 #include <string.h>
 
+// this file is used to use the correct memory management method whilst still calling a generic method in processManager.c
+// all of these functions are called in processManager.c or main.c and they return the result of the specific memory management practice
+// that is being used
+
+
+
 void *intialiseMemory(memoryType me) {
     switch(me) {
         case INFINITE: return intialiseMemoryInfinite();
@@ -46,6 +52,7 @@ void cleanMemory(memoryType me, void *state) {
     }
 }
 
+// converts the commandline string to a enum for ease of use 
 memoryType memTypeFromString(char * str) {
     if (!strcmp(str,"infinite")) return INFINITE;
     if (!strcmp(str,"first-fit")) return CONTIGUOUS;
