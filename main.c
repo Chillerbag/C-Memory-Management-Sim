@@ -53,7 +53,11 @@ int main(int argc, char *argv[]) {
 
     }
     fclose(file);
+
+    // process all processes
     processing(process_list, not_arrived_list, memory_strategy, quantum);
+
+    // clean up
     free(not_arrived_list);
     free(process_list);
     return 0;
