@@ -35,7 +35,7 @@ void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, 
                 printf("%d,FINISHED,process-name=%s,proc-remaining=%d\n", time, currentProcess->p_name, process_list->size);
                 //update statistics
                 int turnAround = time - currentProcess->arrival_time;
-                float overhead = turnAround / currentProcess->service_time;
+                float overhead = (float)turnAround / currentProcess->service_time;
                 averageTurnAround += turnAround;
                 averageOverhead += overhead;
                 if (turnAround > maxTurnAround) maxTurnAround = turnAround;
