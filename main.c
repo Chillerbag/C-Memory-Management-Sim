@@ -42,14 +42,8 @@ int main(int argc, char *argv[]) {
     while (fgets(process, sizeof(process), file)) {
         sscanf(process, "%d %8s %d %d", &arrival_time, p_name, &service_time, &memory_requirement);
         char *p_name_copy = strdup(p_name);
-        if (arrival_time > 0 ) {
-            add_to_list(not_arrived_list, arrival_time, p_name_copy, service_time, memory_requirement);
-            free(p_name_copy);
-        }
-        else {
-            add_to_list(process_list, arrival_time, p_name_copy, service_time, memory_requirement);
-            free(p_name_copy);
-        }
+        add_to_list(not_arrived_list, arrival_time, p_name_copy, service_time, memory_requirement);
+        free(p_name_copy);
 
     }
     fclose(file);

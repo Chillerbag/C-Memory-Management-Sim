@@ -5,6 +5,7 @@ typedef struct process {
     int arrival_time;
     char *p_name;
     int service_time;
+    int remainingTime;
     int memory_requirement;
 } process_t;
 

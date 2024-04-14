@@ -14,6 +14,7 @@ void add_to_list(list_t *list, int arrival_time, const char *p_name, int service
     new_data->arrival_time = arrival_time;
     new_data->p_name = strdup(p_name);
     new_data->service_time = service_time;
+    new_data->remainingTime = service_time;
     new_data->memory_requirement = memory_requirement;
     add_process_to_list(list, new_data);
 }

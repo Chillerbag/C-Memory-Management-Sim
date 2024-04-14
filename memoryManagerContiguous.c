@@ -31,7 +31,7 @@ bool allocateMemoryContiguous(void* state, process_t* process, int time) {
         if (memory[x] != NULL && strcmp(memory[x], process->p_name) == 0) {
             int memUse = getMemUse(memory);
             int address = getAddress(memory, process->p_name);
-            printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->service_time, memUse, address);
+            printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->remainingTime, memUse, address);
             return true;
         }
     }
@@ -54,7 +54,7 @@ bool allocateMemoryContiguous(void* state, process_t* process, int time) {
                 // print stats
                 int memUse = getMemUse(memory);
                 int address = getAddress(memory, process->p_name);
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->service_time, memUse, address);
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->remainingTime, memUse, address);
                 return true;
             }
         } else {

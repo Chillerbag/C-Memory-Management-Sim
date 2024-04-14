@@ -90,7 +90,7 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
             }
         }
         char *array = stringOfIntArray(allocatedFrames, allocatedIndex);
-        printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
+        printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->remainingTime, 100 - (100 * state->freePages) / PAGE_COUNT, array);
         free(array);
         free(allocatedFrames);
         return true;
@@ -124,7 +124,7 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
         state->freePages = 0;
     }
     char *array = stringOfIntArray(allocatedFrames, allocatedIndex); // changed to allocatedIndex to try and print the correct length
-    printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->service_time, 100 - (100 * state->freePages) / PAGE_COUNT, array);
+    printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,mem-frames=%s\n", time, process->p_name, process->remainingTime, 100 - (100 * state->freePages) / PAGE_COUNT, array);
     free(array);
     free(allocatedFrames);
 
