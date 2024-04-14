@@ -119,6 +119,11 @@ char *stringOfIntArray(int *array, int size) {
 }
 void cleanMemoryPaged(void * state) {
     struct pagedMemoryState *memory = (struct pagedMemoryState *)state;
+    for (int i = 0; i < PAGE_COUNT; i++) {
+        free(memory->pageFrames[i]);
+    }
+    free(memory->pageFrames);
+    
     free_list(memory->processesWithMemory);
     free(memory);
 }
