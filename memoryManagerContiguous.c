@@ -8,7 +8,7 @@
 #define MEMORY_SIZE 2048
 
 void* intialiseMemoryContiguous() {
-    // array of p_names, so we use char ** as p_names are dynamically allocated
+    // array of pNames, so we use char ** as pNames are dynamically allocated
     char** memory = malloc(MEMORY_SIZE * sizeof(char*));
 
     // initialise as NULL
@@ -28,10 +28,10 @@ bool allocateMemoryContiguous(void* state, process_t* process, int time) {
     // iterate over whole array 
     for (int x = 0; x < MEMORY_SIZE; x++) {
     // check if we already exist in memory, if we do, its already allocated. Print and return early 
-        if (memory[x] != NULL && strcmp(memory[x], process->p_name) == 0) {
+        if (memory[x] != NULL && strcmp(memory[x], process->pName) == 0) {
             int memUse = getMemUse(memory);
-            int address = getAddress(memory, process->p_name);
-            printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->remainingTime, memUse, address);
+            int address = getAddress(memory, process->pName);
+            printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->pName, process->remainingTime, memUse, address);
             return true;
         }
     }
@@ -46,15 +46,15 @@ bool allocateMemoryContiguous(void* state, process_t* process, int time) {
             // start counting to see if we can fit process
             emptyCounter++;
             // if we can fit
-            if (emptyCounter == process->memory_requirement) {
-            // Make the process occupy memory by setting the memory to the p_name from the start_index to the size of the process
-                for (int j = startIndex; j <= process->memory_requirement + startIndex - 1; j++) {
-                    memory[j] = strdup(process->p_name);
+            if (emptyCounter == process->memoryRequirement) {
+            // Make the process occupy memory by setting the memory to the pName from the start_index to the size of the process
+                for (int j = startIndex; j <= process->memoryRequirement + startIndex - 1; j++) {
+                    memory[j] = strdup(process->pName);
                 }
                 // print stats
                 int memUse = getMemUse(memory);
-                int address = getAddress(memory, process->p_name);
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->p_name, process->remainingTime, memUse, address);
+                int address = getAddress(memory, process->pName);
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->pName, process->remainingTime, memUse, address);
                 return true;
             }
         } else {
@@ -73,7 +73,7 @@ void clearProcessMemoryContiguous(void* state, process_t* process, int time) {
     // iterate over whole array to remove a process
     for (int i = 0; i < MEMORY_SIZE; i++) {
         // check if what is in the char array is the same as the process we are trying to clear
-        if (memory[i] != NULL && strcmp(memory[i], process->p_name) == 0) {
+        if (memory[i] != NULL && strcmp(memory[i], process->pName) == 0) {
             // if it is, we clear
             free(memory[i]); 
             memory[i] = NULL;

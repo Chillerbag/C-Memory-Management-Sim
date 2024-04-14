@@ -11,7 +11,7 @@ void clearProcessMemoryInfinite(void *state, process_t *process, int time) {
 }
 // print the running when a process is allocated to the infinite memory
 bool allocateMemoryInfinite(void *state, process_t *process, int time) {
-    printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, process->p_name, process->remainingTime);
+    printf("%d,RUNNING,process-name=%s,remaining-time=%d\n", time, process->pName, process->remainingTime);
     return true;
 }
 

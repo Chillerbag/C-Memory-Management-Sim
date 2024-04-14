@@ -3,34 +3,34 @@
 #include <string.h>
 
 // creates a list by mallocing space and initing params. 
-list_t *create_list() {
-    list_t *new_list = (list_t *)malloc(sizeof(list_t));
-    new_list->size = 0;
-    new_list->head = NULL;
-    return new_list;
+list_t *createList() {
+    list_t *newList = (list_t *)malloc(sizeof(list_t));
+    newList->size = 0;
+    newList->head = NULL;
+    return newList;
 }
 
 // create a node 
-void add_to_list(list_t *list, int arrival_time, const char *p_name, int service_time, int memory_requirement) {
-    process_t *new_data = (process_t *)malloc(sizeof(process_t));
-    new_data->arrival_time = arrival_time;
+void addToList(list_t *list, int arrivalTime, const char *pName, int serviceTime, int memoryRequirement) {
+    process_t *newData = (process_t *)malloc(sizeof(process_t));
+    newData->arrivalTime = arrivalTime;
     // dynamically allocated string, so use strdup instead of an ugly malloc
-    new_data->p_name = strdup(p_name);
-    new_data->service_time = service_time;
-    new_data->remainingTime = service_time;
-    new_data->memory_requirement = memory_requirement;
+    newData->pName = strdup(pName);
+    newData->serviceTime = serviceTime;
+    newData->remainingTime = serviceTime;
+    newData->memoryRequirement = memoryRequirement;
     // add it to a provided list
-    add_process_to_list(list, new_data);
+    addProcessToList(list, newData);
 }
 
 // add a provided node to a list
-void add_process_to_list(list_t *list, process_t *process) {
-    node_t *new_node = (node_t *)malloc(sizeof(node_t));
-    new_node->data = process;
-    new_node->next = NULL;
+void addProcessToList(list_t *list, process_t *process) {
+    node_t *newNode = (node_t *)malloc(sizeof(node_t));
+    newNode->data = process;
+    newNode->next = NULL;
 
     if (list->head == NULL) {
-        list->head = new_node;
+        list->head = newNode;
     }
 
     else {
@@ -38,35 +38,35 @@ void add_process_to_list(list_t *list, process_t *process) {
         while (current->next != NULL) {
             current = current->next;
         }
-        current->next = new_node;
+        current->next = newNode;
     }
     list->size++;
 }
 
 // IMPORTANT: ONCE YOU USE THIS FUNCTION, YOU MUST FREE THE RETURNED NODE
 // remove head from the list (process we're dealing with, to call if process finishes)
-node_t *remove_head_from_list(list_t *list) {
+node_t *removeHeadFromList(list_t *list) {
     if (list->size == 0) {
         return NULL;
     }
-    node_t *node_to_remove = list->head;
-    list->head = node_to_remove->next;
+    node_t *nodeToRemove = list->head;
+    list->head = nodeToRemove->next;
     list->size--;
-    return node_to_remove;
+    return nodeToRemove;
 }
 // IMPORTANT: ONCE YOU USE THIS FUNCTION, YOU MUST FREE THE RETURNED NODE
 // check if a node is already in a list and remove it
-node_t *remove_match_from_list(list_t *list, char *p_name) {
+node_t *removeMatchFromList(list_t *list, char *pName) {
     if (list->size == 0)
         return NULL;
 
     node_t *current = list->head;
     node_t *match = current;
-    if (!strcmp(list->head->data->p_name, p_name)) {
+    if (!strcmp(list->head->data->pName, pName)) {
         list->head = list->head->next;
     } else {
         if (current->next == NULL) return NULL;
-        while (!!strcmp(current->next->data->p_name, p_name)) {
+        while (!!strcmp(current->next->data->pName, pName)) {
             current = current->next;
             if (current->next == NULL) return NULL;
         }
@@ -79,14 +79,14 @@ node_t *remove_match_from_list(list_t *list, char *p_name) {
 
 
 // cleanup process for a list type
-void free_list(list_t *list) {
-    node_t *current_node = list->head;
-    while (current_node != NULL) {
-        node_t *next_node = current_node->next;
-        free(current_node->data->p_name);
-        free(current_node->data);
-        free(current_node);
-        current_node = next_node;
+void freeList(list_t *list) {
+    node_t *currentNode = list->head;
+    while (currentNode != NULL) {
+        node_t *nextNode = currentNode->next;
+        free(currentNode->data->pName);
+        free(currentNode->data);
+        free(currentNode);
+        currentNode = nextNode;
     }
     free(list);
 }

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// struct for pageFrames which contain p_names and free pages, as well as the list used for memory. 
+// struct for pageFrames which contain pNames and free pages, as well as the list used for memory. 
 struct pagedMemoryState {
     char **pageFrames; // array to hold page frames
     // the head of this list is the least recently used

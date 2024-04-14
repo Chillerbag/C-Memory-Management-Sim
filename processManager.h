@@ -5,6 +5,6 @@
 #ifndef PM_H
 #define PM_H
 
-void processing(list_t *process_list, list_t *not_arrived_list, memoryType mem, int quantum);
+void processing(list_t *processList, list_t *notArrivedList, memoryType mem, int quantum);
 
 #endif

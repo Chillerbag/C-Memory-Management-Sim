@@ -7,30 +7,30 @@
 // this file contains a set of functions for doing round robin processes in processManager.c
 
 // Do round robin scheduling given the current process run time and a set quantum
-process_t *getNextCurrentProcess(list_t *process_list) {
-    if (process_list==NULL || process_list->head==NULL) return NULL;
-    return process_list->head->data;
+process_t *getNextCurrentProcess(list_t *processList) {
+    if (processList==NULL || processList->head==NULL) return NULL;
+    return processList->head->data;
 }
 
 // Remove the head of the process list
-process_t *removeHead(list_t *process_list) {
-    if (process_list->head == NULL) return NULL;
-    node_t *removedNode = remove_head_from_list(process_list);
+process_t *removeHead(list_t *processList) {
+    if (processList->head == NULL) return NULL;
+    node_t *removedNode = removeHeadFromList(processList);
     process_t* removedProcess = removedNode->data;
     free(removedNode);
     return removedProcess;
 }
 
 // Append a new process to the process list
-void appendProcess(list_t *process_list, process_t *newProcess) {
-    add_process_to_list(process_list, newProcess);
+void appendProcess(list_t *processList, process_t *newProcess) {
+    addProcessToList(processList, newProcess);
 }
 
-// Move processes from not_arrived_list to process_list based on the current time
-void moveArrivedProcesses(list_t *process_list, list_t *not_arrived_list, int time) {
-    while (not_arrived_list->head != NULL && not_arrived_list->head->data->arrival_time <= time) {
-        node_t *moveNode = remove_head_from_list(not_arrived_list);
-        appendProcess(process_list, moveNode->data);
+// Move processes from notArrivedList to processList based on the current time
+void moveArrivedProcesses(list_t *processList, list_t *notArrivedList, int time) {
+    while (notArrivedList->head != NULL && notArrivedList->head->data->arrivalTime <= time) {
+        node_t *moveNode = removeHeadFromList(notArrivedList);
+        appendProcess(processList, moveNode->data);
         free(moveNode);
     }
 }

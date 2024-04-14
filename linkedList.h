@@ -3,11 +3,11 @@
 
 // struct for a single process
 typedef struct process {
-    int arrival_time;
-    char *p_name;
-    int service_time;
+    int arrivalTime;
+    char *pName;
+    int serviceTime;
     int remainingTime;
-    int memory_requirement;
+    int memoryRequirement;
 } process_t;
 
 // a node containing a process and a pointer to the next node in the LL
@@ -23,21 +23,21 @@ typedef struct list {
 } list_t;
 
 // create a list_t
-list_t *create_list();
+list_t *createList();
 
 // create a node
-void add_to_list(list_t *list, int arrival_time, const char *p_name, int service_time, int memory_requirement);
+void addToList(list_t *list, int arrivalTime, const char *pName, int serviceTime, int memoryRequirement);
 
 // in node creation, call this to add the node to the list
-void add_process_to_list(list_t *list, process_t *process);
+void addProcessToList(list_t *list, process_t *process);
 
 // remove head from the list (process we're dealing with, to call if process finishes)
-node_t *remove_head_from_list(list_t *list);
+node_t *removeHeadFromList(list_t *list);
 
-// check if a provided p_name is in a provided list
-node_t *remove_match_from_list(list_t *list,char* name);
+// check if a provided pName is in a provided list
+node_t *removeMatchFromList(list_t *list,char* name);
 
 // cleanup used memory 
-void free_list(list_t *list);
+void freeList(list_t *list);
 
 #endif
