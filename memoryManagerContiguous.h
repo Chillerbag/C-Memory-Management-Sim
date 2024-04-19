@@ -17,5 +17,4 @@ void clearProcessMemoryContiguous(void *, process_t *, int);
 void freeStateContiguous(void *);
 
 // helper functions to get stats to print
-int getAddress(char** memory, char *processName);
 int getMemUse(char** memory);

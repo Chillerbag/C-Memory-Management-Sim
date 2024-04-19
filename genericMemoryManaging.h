@@ -24,6 +24,6 @@ void clearProcessMemory(memoryType me, void *state, process_t *process, int time
 // calls the function to allocate a process to memory of the appropriate memory manager
 bool allocateMemory(memoryType me, void *state, process_t *process, int time);
 
-// calls function to clean up after a process is done
+// calls function to clean up after a process is done of the appropriate memory manager
 void freeState(memoryType me, void *state);
 #endif

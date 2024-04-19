@@ -13,7 +13,7 @@
 // that is being used
 
 
-
+// sets up the state for the memory manager
 void *intialiseMemory(memoryType me) {
     switch(me) {
         case INFINITE: return intialiseMemoryInfinite();
@@ -24,6 +24,7 @@ void *intialiseMemory(memoryType me) {
     }
 }
 
+// clears all the memory for a process
 void clearProcessMemory(memoryType me, void *state, process_t *process, int time) {
     switch(me) {
         case INFINITE: clearProcessMemoryInfinite(state, process, time); break;
@@ -33,6 +34,7 @@ void clearProcessMemory(memoryType me, void *state, process_t *process, int time
     }
 }
 
+// allocate memory to a process
 bool allocateMemory(memoryType me, void *state, process_t *process, int time) {
     switch(me) {
         case INFINITE: return allocateMemoryInfinite(state, process, time);
@@ -43,6 +45,7 @@ bool allocateMemory(memoryType me, void *state, process_t *process, int time) {
     }
 }
 
+//free the state for the memoryManager
 void freeState(memoryType me, void *state) {
     switch(me) {
         case INFINITE: return freeStateInfinite(state);
