@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     FILE *file = fopen(filename, "r");
     char process[1024];
     while (fgets(process, sizeof(process), file)) {
-        sscanf(process, "%d %8s %d %d", &arrivalTime, pName, &serviceTime, &memoryRequirement);
+        sscanf(process, "%u %8s %d %d", &arrivalTime, pName, &serviceTime, &memoryRequirement);
         char *pNameCopy = strdup(pName);
         addToList(notArrivedList, arrivalTime, pNameCopy, serviceTime, memoryRequirement);
         free(pNameCopy);

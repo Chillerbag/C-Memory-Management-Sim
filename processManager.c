@@ -63,7 +63,13 @@ void doProcessing(list_t *processList, list_t *notArrivedList, memoryType mem, i
 
         // Step time
         if (currentProcess != NULL) {
-            currentProcess->remainingTime -= quantum;
+            // handling unsigned int arithmetic
+            if (currentProcess->remainingTime >= quantum) {
+                currentProcess->remainingTime -= quantum;
+            }
+            else {
+                currentProcess->remainingTime = 0; 
+            }
         }
         time += quantum;
     }
