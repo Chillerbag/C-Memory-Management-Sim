@@ -13,9 +13,9 @@ int main(int argc, char *argv[]) {
     list_t *notArrivedList = createList(); // Separate list for processes that have not arrived
 
     // set up vars to be read from file
-    int arrivalTime; 
+    unsigned int arrivalTime; 
     char pName[8]; 
-    int serviceTime;
+    unsigned int serviceTime;
     int memoryRequirement;
 
 

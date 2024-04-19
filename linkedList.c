@@ -11,7 +11,7 @@ list_t *createList() {
 }
 
 // create a node 
-void addToList(list_t *list, int arrivalTime, const char *pName, int serviceTime, int memoryRequirement) {
+void addToList(list_t *list, unsigned int arrivalTime, const char *pName, unsigned int serviceTime, int memoryRequirement) {
     process_t *newData = (process_t *)malloc(sizeof(process_t));
     newData->arrivalTime = arrivalTime;
     // dynamically allocated string, so use strdup instead of an ugly malloc

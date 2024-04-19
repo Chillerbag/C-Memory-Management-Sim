@@ -3,10 +3,10 @@
 
 // struct for a single process
 typedef struct process {
-    int arrivalTime;
+    unsigned int arrivalTime;
     char *pName;
-    int serviceTime;
-    int remainingTime;
+    unsigned int serviceTime;
+    unsigned int remainingTime;
     int memoryRequirement;
 } process_t;
 
@@ -26,7 +26,7 @@ typedef struct list {
 list_t *createList();
 
 // create a node
-void addToList(list_t *list, int arrivalTime, const char *pName, int serviceTime, int memoryRequirement);
+void addToList(list_t *list, unsigned int arrivalTime, const char *pName, unsigned int serviceTime, int memoryRequirement);
 
 // in node creation, call this to add the node to the list
 void addProcessToList(list_t *list, process_t *process);
