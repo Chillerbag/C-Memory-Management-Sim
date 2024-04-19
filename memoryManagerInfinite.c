@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-// nothing needs to be initialised, so return null, for consistencies sake. 
+// nothing needs to be initialised, so return null, for consistencies sake.
 void *intialiseMemoryInfinite() {
     return NULL;
 }
@@ -16,6 +16,5 @@ bool allocateMemoryInfinite(void *state, process_t *process, int time) {
 }
 
 // no memory needs to be cleaned, as this mallocs nothing
-void cleanMemoryInfinite(void * state) {
-
+void freeStateInfinite(void *state) {
 }

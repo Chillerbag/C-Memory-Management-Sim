@@ -14,7 +14,7 @@ bool allocateMemoryContiguous(void *, process_t *, int);
 void clearProcessMemoryContiguous(void *, process_t *, int);
 
 // cleans all the memory used by this file at end of program
-void cleanMemoryContiguous(void *);
+void freeStateContiguous(void *);
 
 // helper functions to get stats to print
 int getAddress(char** memory, char *processName);

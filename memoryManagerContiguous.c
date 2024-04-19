@@ -81,8 +81,8 @@ void clearProcessMemoryContiguous(void* state, process_t* process, int time) {
     }
 }
 
-// cleanMemoryContiguous - iterate over the memory array, freeing each char * until we get to the end, then free the array itself. 
-void cleanMemoryContiguous(void * state) {
+// freeStateContiguous - iterate over the memory array, freeing each char * until we get to the end, then free the array itself. 
+void freeStateContiguous(void * state) {
     char** memory = (char**)state;
     for (int i = 0; i < MEMORY_SIZE; i++) {
         free(memory[i]);

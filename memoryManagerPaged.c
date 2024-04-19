@@ -5,25 +5,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+// these are constants defined in the spec
 #define PAGE_COUNT 512
 #define PAGE_SIZE 4
-struct pagedMemoryState {
-    char **pageFrames;
-    // the head of this list is the least recently used
-    list_t *processesWithMemory;
-    int freePages;
-};
 
 void *intialiseMemoryPaged() {
     struct pagedMemoryState *state = (struct pagedMemoryState *)malloc(sizeof(struct pagedMemoryState));
     state->processesWithMemory = createList();
-
+    state->freePages = PAGE_COUNT;
     state->pageFrames = malloc(PAGE_COUNT * sizeof(char *));
     for (int i = 0; i < PAGE_COUNT; i++)
         state->pageFrames[i] = NULL;
-    state->freePages = PAGE_COUNT;
     return state;
 }
+
 void clearProcessMemoryPaged(void *statev, process_t *process, int time) {
     struct pagedMemoryState *state = (struct pagedMemoryState *)statev;
     // clear pages
@@ -42,12 +37,10 @@ void clearProcessMemoryPaged(void *statev, process_t *process, int time) {
     free(array);
     free(clearedFrames);
 
-    // cleanup state's processesWithMemory list
+    // cleanup the rest of our state
     state->freePages += totalPages;
     node_t *toBeFreed = removeMatchFromList(state->processesWithMemory, process->pName);
-    if (toBeFreed == NULL)
-        return;
-
+    if (toBeFreed == NULL) return;
     free(toBeFreed->data->pName);
     free(toBeFreed->data);
     free(toBeFreed);
@@ -99,8 +92,18 @@ bool allocateMemoryPaged(void *statev, process_t *process, int time) {
     return true;
 }
 
-// adapted from:https://stackoverflow.com/questions/30234363/how-can-i-convert-an-int-array-into-a-string-array
-// TODO:Move to a utils?
+void freeStatePaged(void * state) {
+    struct pagedMemoryState *memory = (struct pagedMemoryState *)state;
+    for (int i = 0; i < PAGE_COUNT; i++) {
+        free(memory->pageFrames[i]);
+    }
+    free(memory->pageFrames);
+    
+    freeList(memory->processesWithMemory);
+    free(memory);
+}
+
+// helper function adapted from:https://stackoverflow.com/questions/30234363/how-can-i-convert-an-int-array-into-a-string-array
 char *stringOfIntArray(int *array, int size) {
     if (size == 0)
         return "[]";
@@ -111,15 +114,4 @@ char *stringOfIntArray(int *array, int size) {
         index += sprintf(&str[index], "%d,", array[i]);
     sprintf(&str[index - 1], "]");
     return str;
-}
-
-void cleanMemoryPaged(void * state) {
-    struct pagedMemoryState *memory = (struct pagedMemoryState *)state;
-    for (int i = 0; i < PAGE_COUNT; i++) {
-        free(memory->pageFrames[i]);
-    }
-    free(memory->pageFrames);
-    
-    freeList(memory->processesWithMemory);
-    free(memory);
 }

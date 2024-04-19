@@ -5,7 +5,7 @@
 #include <string.h>
 
 // struct for pageFrames which contain pNames and free pages, as well as the list used for memory. 
-struct pagedMemoryState {
+struct virtualPagedMemoryState {
     char **pageFrames; // array to hold page frames
     // the head of this list is the least recently used
     list_t *processesWithMemory;
@@ -23,4 +23,4 @@ void clearProcessMemoryVirtual(void *, process_t *, int, int);
 bool allocateMemoryVirtual(void *, process_t *, int);
 
 // clean up all used memory
-void cleanMemoryVirtual(void *);
+void freeStateVirtual(void *);

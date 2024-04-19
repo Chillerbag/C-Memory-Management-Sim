@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void processing(list_t *processList, list_t *notArrivedList, memoryType mem, int quantum) {
+void doProcessing(list_t *processList, list_t *notArrivedList, memoryType mem, int quantum) {
     //operating variables
     void *memoryManagerData = intialiseMemory(mem);
     process_t *currentProcess = NULL;
@@ -68,8 +68,7 @@ void processing(list_t *processList, list_t *notArrivedList, memoryType mem, int
         time += quantum;
     }
     time -= quantum;
-    // TODO: clean up function
-    cleanMemory(mem, memoryManagerData);
+    freeState(mem, memoryManagerData);
 
     averageTurnAround /= totalProcesses;
     averageOverhead /= totalProcesses;

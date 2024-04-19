@@ -13,8 +13,8 @@
 
 // setup the virtual memory 
 void *intialiseMemoryVirtual() {
-    // allocate memory for pagedMemoryState struct
-    struct pagedMemoryState *state = (struct pagedMemoryState *)malloc(sizeof(struct pagedMemoryState));
+    // allocate memory for virtualPagedMemoryState struct
+    struct virtualPagedMemoryState *state = (struct virtualPagedMemoryState *)malloc(sizeof(struct virtualPagedMemoryState));
     // set up the list of processes currently in memory
     state->processesWithMemory = createList();
     // malloc as many pages as can exist in memory 
@@ -27,7 +27,7 @@ void *intialiseMemoryVirtual() {
 
 // clear memory allocated to a process
 void clearProcessMemoryVirtual(void *statev, process_t *process, int time, int memoryReq) {
-    struct pagedMemoryState *state = (struct pagedMemoryState *)statev;
+    struct virtualPagedMemoryState *state = (struct virtualPagedMemoryState *)statev;
     int j = 0;
     int *clearedFrames = malloc(PAGE_COUNT * sizeof(int)); // Allocate maximum possible frames
 
@@ -71,7 +71,7 @@ void clearProcessMemoryVirtual(void *statev, process_t *process, int time, int m
 
 // allocate memory to a process
 bool allocateMemoryVirtual(void *statev, process_t *process, int time) {        
-    struct pagedMemoryState *state = (struct pagedMemoryState *)statev;
+    struct virtualPagedMemoryState *state = (struct virtualPagedMemoryState *)statev;
     int minRequiredPages = 0;
     // Is it already in memory?
     node_t *matchNode = removeMatchFromList(state->processesWithMemory, process->pName);
@@ -145,8 +145,8 @@ bool allocateMemoryVirtual(void *statev, process_t *process, int time) {
 }
 
 // iterate over memory and free pageframes and also all processesWithMemory before freeing memory itself
-void cleanMemoryVirtual(void * state) {
-    struct pagedMemoryState *memory = (struct pagedMemoryState *)state;
+void freeStateVirtual(void * state) {
+    struct virtualPagedMemoryState *memory = (struct virtualPagedMemoryState *)state;
     for (int i = 0; i < PAGE_COUNT; i++) {
         free(memory->pageFrames[i]);
     }

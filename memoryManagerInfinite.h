@@ -13,4 +13,4 @@ void clearProcessMemoryInfinite(void *, process_t *, int);
 bool allocateMemoryInfinite(void *, process_t *, int);
 
 // does nothing, as real memory is not used by this program
-void cleanMemoryInfinite(void *);
+void freeStateInfinite(void *);

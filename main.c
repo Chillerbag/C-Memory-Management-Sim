@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     fclose(file);
 
     // process all processes
-    processing(processList, notArrivedList, memoryStrategy, quantum);
+    doProcessing(processList, notArrivedList, memoryStrategy, quantum);
 
     // clean up
     free(notArrivedList);
