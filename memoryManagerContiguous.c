@@ -52,9 +52,9 @@ bool allocateMemoryContiguous(void* state, process_t* process, int time) {
                     memory[j] = strdup(process->pName);
                 }
                 // print stats
-                int memUse = getMemUse(memory);
+                float memUse = getMemUse(memory);
                 int address = getAddress(memory, process->pName);
-                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%d%%,allocated-at=%d\n", time, process->pName, process->remainingTime, memUse, address);
+                printf("%d,RUNNING,process-name=%s,remaining-time=%d,mem-usage=%.0f%%,allocated-at=%d\n", time, process->pName, process->remainingTime, memUse, address);
                 return true;
             }
         } else {
@@ -93,19 +93,22 @@ void cleanMemoryContiguous(void * state) {
 // --------------------------- helper functions ---------------------------
 
 // return how much memory is currently being used as a percentage 
-int getMemUse(char** memory) {
+float getMemUse(char** memory) {
     int memCount = 0;
-    int memUse = 0;
+    float memUse = 0;
     for (int i = 0; i < MEMORY_SIZE; i++) {
         if (memory[i] != NULL) {
             memCount += 1;
         }
     }
-    memUse = (memCount * 100) / MEMORY_SIZE;
-    // for rounding purposes
-    if ((memCount * 100) % MEMORY_SIZE != 0) {
-        memUse += 1;
-    }
+    memUse = (memCount * 100);
+    memUse /= MEMORY_SIZE;
+
+    // if((memCount * 100) / MEMORY_SIZE !=memUse) {printf("ASDASDASDASDAS");}
+    // // for rounding purposes
+    // if ((memCount * 100) % MEMORY_SIZE != 0) {
+    //     memUse += 1;
+    // }
     return memUse;
 }
 

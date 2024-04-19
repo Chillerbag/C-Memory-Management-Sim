@@ -18,4 +18,4 @@ void cleanMemoryContiguous(void *);
 
 // helper functions to get stats to print
 int getAddress(char** memory, char *processName);
-int getMemUse(char** memory);
+float getMemUse(char** memory);
